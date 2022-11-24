@@ -8,23 +8,10 @@
             "server": "localhost",
             "port": 3306,
             "driver": "MySQL",
-            "name": "Assignment_2",
-            "database": "hotel",
-            "username": "hieptth",
-            "password": "ChasuHak0813"
-        },
-        {
-            "mysqlOptions": {
-                "authProtocol": "default"
-            },
-            "previewLimit": 50,
-            "server": "localhost",
-            "port": 3306,
-            "driver": "MySQL",
             "name": "test",
             "database": "myhotel",
             "username": "root",
-            "password": "ChasuHak0813"
+            "password": "mynewpassword"
         }
     ]
 }
