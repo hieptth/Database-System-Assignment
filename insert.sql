@@ -21,7 +21,7 @@ VALUES (
     (
         'Olumu',
         'Gintama',
-        2633286520,
+        091221120,
         'ZuZu352@gmail.com'
     );
 ALTER TABLE CHINHANH

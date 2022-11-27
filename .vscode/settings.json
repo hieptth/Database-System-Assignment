@@ -12,6 +12,19 @@
             "database": "myhotel",
             "username": "root",
             "password": "mynewpassword"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "Hotel",
+            "database": "MyHotel",
+            "username": "root",
+            "password": "mynewpassword"
         }
     ]
 }
