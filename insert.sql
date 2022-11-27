@@ -11,6 +11,18 @@ VALUES (
         'Bleach',
         0800281220,
         'DuySocket222@gmail.com'
+    ),
+    (
+        'Alumu',
+        'Akame',
+        0833281520,
+        'LokLok322@gmail.com'
+    ),
+    (
+        'Olumu',
+        'Gintama',
+        2633286520,
+        'ZuZu352@gmail.com'
     );
 ALTER TABLE CHINHANH
 MODIFY COLUMN MaChiNhanh varchar(50);
