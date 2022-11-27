@@ -17,6 +17,6 @@ MODIFY COLUMN MaChiNhanh varchar(50);
 UPDATE CHINHANH
 SET MaChiNhanh = CONCAT('CN', MaChiNhanh);
 -- @block HINHANH_CHINHANH --
-INSERT INTO hinhanh_chinhanh (HinhAnh)
-VALUES ('youtube.com'),
-    ('amazon.com');
+INSERT INTO hinhanh_chinhanh (HA_MCN, HinhAnh)
+VALUES ('CN1', 'youtube.com'),
+    ('CN2', 'amazon.com');
