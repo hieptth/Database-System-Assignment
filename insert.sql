@@ -117,3 +117,84 @@ ALTER TABLE KHACHHANG
 MODIFY COLUMN MaKhachHang VARCHAR(8);
 UPDATE KHACHHANG
 SET MaKhachHang = CONCAT ('KH', MaKhachHang);
+-- @block 14 GOIDICHVU --
+INSERT INTO GOIDICHVU (TenGoi, SoNgay, SoKhach)
+VALUES ('Goi1', 1, 1),
+    ('Goi2', 2, 2),
+    ('Goi3', 3, 3),
+    ('Goi4', 4, 4);
+-- @block 15 HOADONGOIDICHVU --
+INSERT INTO HOADONGOIDICHVU (
+        HDGDV_MKH,
+        HDGDV_TG,
+        NgayGioMua,
+        NgayBatDau,
+        TongTien
+    )
+VALUES (
+        'KH000001',
+        'Goi1',
+        '2022-1-1 23:59:59',
+        '2022-1-2 23:59:59',
+        1000
+    ),
+    (
+        'KH000002',
+        'Goi2',
+        '2022-1-14 23:59:59',
+        '2022-1-15 23:59:59',
+        2000
+    ),
+    (
+        'KH000003',
+        'Goi3',
+        '2022-2-26 23:59:59',
+        '2022-2-27 23:59:59',
+        3000
+    ),
+    (
+        'KH000004',
+        'Goi4',
+        '2022-9-7 23:59:59',
+        '2022-9-7 23:59:59',
+        4000
+    );
+-- @block 16 DONDATPHONG --
+INSERT INTO DONDATPHONG (
+        NgayGioDat,
+        NgayNhanPhong,
+        NgayTraPhong,
+        TinhTrang
+    )
+VALUES (
+        '2022-02-13 01:51:10',
+        '2022-06-12 12:09:20',
+        '2022-09-19 11:01:05',
+        0
+    ),
+    (
+        '2022-03-03 19:03:34',
+        '2022-06-24 04:36:37',
+        '2022-09-30 00:38:31',
+        1
+    ),
+    (
+        '2022-04-10 09:00:02',
+        '2022-08-18 01:41:43',
+        '2022-10-20 07:24:45',
+        2
+    ),
+    (
+        '2022-05-02 02:27:49',
+        '2022-09-08 18:37:16',
+        '2022-10-30 18:35:19',
+        3
+    );
+ALTER TABLE DONDATPHONG
+MODIFY COLUMN MaDatPhong VARCHAR(16);
+UPDATE DONDATPHONG
+SET MaDatPhong = CONCAT (
+        'DP',
+        CURDATE() + 0,
+        MaDatPhong
+    );
