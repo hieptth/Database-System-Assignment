@@ -241,8 +241,31 @@ UPDATE DOANHNGHIEP
 SET MaDoanhNghiep = CONCAT ('DN', MaDoanhNghiep);
 -- @block 20 DICHVU --
 INSERT INTO DICHVU (MaDichVu, LoaiDichVu, SoKhach, PhongCach, DV_MDN)
-VALUES (1, 'R', 1, 'NULL', 'DN1');
-ALTER TABLE DICHVU
-MODIFY COLUMN MaDichVu VARCHAR(6);
-UPDATE DICHVU
-SET MaDichVu = CONCAT ('DV', LoaiDichVu, MaDichVu);
+VALUES ('DVS001', 'S', 1, 'MX', 'DN0003'),
+    ('DVS002', 'S', 1, 'NN', 'DN0003'),
+    ('DVS003', 'S', 1, 'CD', 'DN0003'),
+    ('DVS004', 'S', 1, 'XH', 'DN0003'),
+    ('DVM001', 'M', 1, 'MK', 'DN0004'),
+    ('DVM002', 'M', 1, 'NV', 'DN0004'),
+    ('DVM003', 'M', 1, 'AT', 'DN0004'),
+    ('DVM004', 'M', 1, 'CA', 'DN0004');
+-- @block 21 DICHVUSPA --
+INSERT INTO DICHVUSPA (DVS_MDV, DichVuSpa)
+VALUES ('DVS001', 'MAT XA'),
+    ('DVS001', 'NGAM NUOC'),
+    ('DVS001', 'CHUOM DA'),
+    ('DVS001', 'XONG HOI');
+-- @block 22 LOAIHANGDOLUUNIEM --
+INSERT INTO LOAIHANGDOLUUNIEM (LHDLN_MDV, LoaiHang)
+VALUES ('DVM001', 'MOC KHOA'),
+    ('DVM002', 'NON VAI'),
+    ('DVM003', 'AO THUN'),
+    ('DVM004', 'CHUP ANH');
+-- @block 23 THUONGHIEUDOLUUNIEM --
+INSERT INTO THUONGHIEUDOLUUNIEM (THDLN_MDV, ThuongHieu)
+VALUES ('DVM001', 'GUCCI'),
+    ('DVM002', 'DOLCE'),
+    ('DVM003', 'COOLMATE'),
+    ('DVM004', 'FUMA');
+-- @block 24 MATBANG --
+INSERT INTO MATBANG ()
