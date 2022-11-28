@@ -81,10 +81,10 @@ UPDATE LOAIVATTU
 SET MaLoaiVatTu = CONCAT('VT', MaLoaiVatTu);
 -- @block 9 LOAIVATTU_TRONG_LOAIPHONG --
 INSERT INTO LOAIVATTU_TRONG_LOAIPHONG(Trong_MLVT, Trong_MLP, SoLuong)
-VALUES (1, 1,),
-    (2, 2, 2),
-    (3, 3, 3),
-    (4, 4, 4);
+VALUES ('VT0001', 1, DEFAULT),
+    ('VT0002', 2, 2),
+    ('VT0003', 3, 3),
+    ('VT0004', 4, 4);
 -- @block 10 VATTU --
 INSERT INTO VATTU (VT_MCN, VT_MLVT, STTVatTu, TinhTrang, VT_SP)
 VALUES ('CN1', 'VT0001', 1, 'TOT', 101),
@@ -106,7 +106,7 @@ INSERT INTO CUNGCAPVATTU (CCVT_MNCC, CCVT_MLVT, CCVT_MCN)
 VALUES ('NCC0001', 'VT0001', 'CN1'),
     ('NCC0002', 'VT0002', 'CN2'),
     ('NCC0003', 'VT0003', 'CN3'),
-    ('NCC0004', 'VT0004', 'CN4');
+    ('NCC1000', 'VT0004', 'CN4');
 -- @block 13 KHACHHANG --
 INSERT INTO KHACHHANG (MaKhachHang, CCCD, Email, Username, Diem, Loai)
 VALUES (1, '000000', 'a@gmail.com', 'Phuc', 0, 1),
@@ -118,11 +118,11 @@ MODIFY COLUMN MaKhachHang VARCHAR(8);
 UPDATE KHACHHANG
 SET MaKhachHang = CONCAT ('KH', MaKhachHang);
 -- @block 14 GOIDICHVU --
-INSERT INTO GOIDICHVU (TenGoi, SoNgay, SoKhach)
-VALUES ('Goi1', 1, 1),
-    ('Goi2', 2, 2),
-    ('Goi3', 3, 3),
-    ('Goi4', 4, 4);
+INSERT INTO GOIDICHVU (TenGoi, SoNgay, SoKhach, Gia)
+VALUES ('Goi1', 1, 1, 1000),
+    ('Goi2', 2, 2, 2000),
+    ('Goi3', 3, 3, 3000),
+    ('Goi4', 4, 4, 4000);
 -- @block 15 HOADONGOIDICHVU --
 INSERT INTO HOADONGOIDICHVU (
         HDGDV_MKH,
@@ -192,6 +192,7 @@ VALUES (
         '2022-08-18 01:41:43',
         '2022-10-20 07:24:45',
         2,
+        3000,
         'KH000003',
         'Goi3'
     ),
@@ -200,6 +201,7 @@ VALUES (
         '2022-09-08 18:37:16',
         '2022-10-30 18:35:19',
         3,
+        4000,
         'KH000004',
         'Goi4'
     );
@@ -208,16 +210,13 @@ MODIFY COLUMN MaDatPhong VARCHAR(16);
 UPDATE DONDATPHONG
 SET MaDatPhong = CONCAT (
         'DP',
-        CURDATE() + 0,
+        '28112022',
         MaDatPhong
     );
 -- @block 17 PHONGTHUE --
-INSERT INTO PHONGTHUE (PT_MCN, PT_SP)
-VALUES ('CN1', 101),
-    ('CN2', 202),
-    ('CN3', 303),
-    ('CN4', 404);
-ALTER TABLE PHONGTHUE
-MODIFY COLUMN PT_MDP VARCHAR(16);
-UPDATE PHONGTHUE
-SET PT_MDP = CONCAT ('DP', CURDATE() + 0, PT_MDP);
+INSERT INTO PHONGTHUE (PT_MDP, PT_MCN, PT_SP)
+VALUES ('DP28112022000001', 'CN1', 101),
+    ('DP28112022000002', 'CN2', 202),
+    ('DP28112022000003', 'CN3', 303),
+    ('DP28112022000004', 'CN4', 404);
+-- @block 18 HOADON --
