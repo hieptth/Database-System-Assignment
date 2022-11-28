@@ -101,3 +101,19 @@ ALTER TABLE NHACUNGCAP
 MODIFY COLUMN MaNhaCungCap VARCHAR(7);
 UPDATE NHACUNGCAP
 SET MaNhaCungCap = CONCAT('NCC', MaNhaCungCap);
+-- @block 12 CUNGCAPVATTU --
+INSERT INTO CUNGCAPVATTU (CCVT_MNCC, CCVT_MLVT, CCVT_MCN)
+VALUES ('NCC0001', 'VT0001', 'CN1'),
+    ('NCC0002', 'VT0002', 'CN2'),
+    ('NCC0003', 'VT0003', 'CN3'),
+    ('NCC0004', 'VT0004', 'CN4');
+-- @block 13 KHACHHANG --
+INSERT INTO KHACHHANG (MaKhachHang, CCCD, Email, Username, Diem, Loai)
+VALUES (1, '000000', 'a@gmail.com', 'Phuc', 0, 1),
+    (2, '111111', 'b@gmail.com', 'NK', 0, 1),
+    (3, '222222', 'c@gmail.com', 'HH', 0, 1),
+    (4, '333333', 'd@gmail.com', 'TV', 0, 1);
+ALTER TABLE KHACHHANG
+MODIFY COLUMN MaKhachHang VARCHAR(8);
+UPDATE KHACHHANG
+SET MaKhachHang = CONCAT ('KH', MaKhachHang);
