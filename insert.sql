@@ -164,31 +164,44 @@ INSERT INTO DONDATPHONG (
         NgayGioDat,
         NgayNhanPhong,
         NgayTraPhong,
-        TinhTrang
+        TinhTrang,
+        TongTien,
+        DDP_MKH,
+        DDP_TG
     )
 VALUES (
         '2022-02-13 01:51:10',
         '2022-06-12 12:09:20',
         '2022-09-19 11:01:05',
-        0
+        0,
+        1000,
+        'KH000001',
+        'Goi1'
     ),
     (
         '2022-03-03 19:03:34',
         '2022-06-24 04:36:37',
         '2022-09-30 00:38:31',
-        1
+        1,
+        2000,
+        'KH000002',
+        'Goi2'
     ),
     (
         '2022-04-10 09:00:02',
         '2022-08-18 01:41:43',
         '2022-10-20 07:24:45',
-        2
+        2,
+        'KH000003',
+        'Goi3'
     ),
     (
         '2022-05-02 02:27:49',
         '2022-09-08 18:37:16',
         '2022-10-30 18:35:19',
-        3
+        3,
+        'KH000004',
+        'Goi4'
     );
 ALTER TABLE DONDATPHONG
 MODIFY COLUMN MaDatPhong VARCHAR(16);
@@ -198,3 +211,13 @@ SET MaDatPhong = CONCAT (
         CURDATE() + 0,
         MaDatPhong
     );
+-- @block 17 PHONGTHUE --
+INSERT INTO PHONGTHUE (PT_MCN, PT_SP)
+VALUES ('CN1', 101),
+    ('CN2', 202),
+    ('CN3', 303),
+    ('CN4', 404);
+ALTER TABLE PHONGTHUE
+MODIFY COLUMN PT_MDP VARCHAR(16);
+UPDATE PHONGTHUE
+SET PT_MDP = CONCAT ('DP', CURDATE() + 0, PT_MDP);
