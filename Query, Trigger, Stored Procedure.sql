@@ -1,5 +1,6 @@
 USE myhotel;
 
+/* Procedure 1 -- not completed */
 DELIMITER \\
 CREATE PROCEDURE GoiDichVu (
     IN MaKhachHang VARCHAR(8),
@@ -27,3 +28,68 @@ BEGIN
     END IF;
 END \\
 DELIMITER ;
+
+DROP TRIGGER update_TongTienGoiDichVu;
+DELIMITER \\
+CREATE TRIGGER update_TongTienGoiDichVu
+AFTER INSERT ON HOADONGOIDICHVU FOR EACH ROW
+BEGIN
+    SELECT Loai FROM KHACHHANG WHERE MaKhachHang = HDGDV_MKH,
+    CASE
+        WHEN Loai = 2 THEN SET NEW.TongTien = (SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG)*9/10;
+        WHEN Loai = 3 THEN SET NEW.TongTien = (SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG)*17/20;
+        WHEN Loai = 4 THEN SET NEW.TongTien = (SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG)*4/5;
+    END;
+END \\
+DELIMITER ;
+
+DROP TRIGGER update_TongTienDonDatPhong
+DELIMITER \\
+CREATE TRIGGER update_TongTienDonDatPhong
+AFTER INSERT ON DONDATPHONG FOR EACH ROW
+BEGIN
+    SELECT Loai FROM KHACHHANG WHERE MaKhachHang = HDGDV_MKH,
+    CASE
+        WHEN Loai = 2 THEN SET NEW.TongTien = (SELECT Gia FROM GOIDICHVU WHERE TenGoi = DDP_TG)*9/10;
+        WHEN Loai = 3 THEN
+        BEGIN
+            SET NEW.TongTien = (SELECT Gia FROM GOIDICHVU WHERE TenGoi = DDP_TG)*17/20;
+            SET NEW.NgayTraPhong = ADDDATE(NgayTraPhong, INTERVAL 1 DAY);
+        END;
+        WHEN Loai = 4 THEN
+        BEGIN
+            SET NEW.TongTien = (SELECT Gia FROM GOIDICHVU WHERE TenGoi = DDP_TG)*4/5;
+            SET NEW.NgayTraPhong = ADDDATE(NgayTraPhong, INTERVAL 2 DAY);
+        END;
+    END;
+END \\
+DELIMITER ;
+
+DROP TRIGGER update_Diem;
+DELIMITER \\
+CREATE TRIGGER update_Diem
+AFTER INSERT ON KHACHHANG FOR EACH ROW
+BEGIN
+    SET NEW.Diem = FLOOR(((SELECT TongTien FROM HOADONGOIDICHVU WHERE HDGDV_MKH = MaKhachHang) + (SELECT TongTien FROM DONDATPHONG WHERE DDP_MKH = MaKhachHang))/1000);
+END \\
+DELIMITER ;
+
+DROP TRIGGER update_LoaiKhachHang;
+DELIMITER \\
+CREATE TRIGGER update_LoaiKhachHang
+AFTER INSERT ON KHACHHANG FOR EACH ROW
+BEGIN
+    SELECT Diem,
+    CASE
+        WHEN Diem < 50 THEN SET NEW.Loai = 1;
+        WHEN Diem < 100 THEN SET NEW.Loai = 2;
+        WHEN Diem < 1000 THEN SET NEW.Loai = 3;
+        ELSE SET NEW.Loai = 4;
+    END;
+END \\
+DELIMITER ;
+
+DROP TRIGGER package_collision;
+DELIMITER \\
+CREATE TRIGGER package_collision
+BEFORE INSERT ON 
