@@ -81,10 +81,10 @@ UPDATE LOAIVATTU
 SET MaLoaiVatTu = CONCAT('VT', MaLoaiVatTu);
 -- @block 9 LOAIVATTU_TRONG_LOAIPHONG --
 INSERT INTO LOAIVATTU_TRONG_LOAIPHONG(Trong_MLVT, Trong_MLP, SoLuong)
-VALUES (1, 1,),
-    (2, 2, 2),
-    (3, 3, 3),
-    (4, 4, 4);
+VALUES ('VT0001', 1, DEFAULT),
+    ('VT0002', 2, 2),
+    ('VT0003', 3, 3),
+    ('VT0004', 4, 4);
 -- @block 10 VATTU --
 INSERT INTO VATTU (VT_MCN, VT_MLVT, STTVatTu, TinhTrang, VT_SP)
 VALUES ('CN1', 'VT0001', 1, 'TOT', 101),
@@ -106,7 +106,7 @@ INSERT INTO CUNGCAPVATTU (CCVT_MNCC, CCVT_MLVT, CCVT_MCN)
 VALUES ('NCC0001', 'VT0001', 'CN1'),
     ('NCC0002', 'VT0002', 'CN2'),
     ('NCC0003', 'VT0003', 'CN3'),
-    ('NCC0004', 'VT0004', 'CN4');
+    ('NCC1000', 'VT0004', 'CN4');
 -- @block 13 KHACHHANG --
 INSERT INTO KHACHHANG (MaKhachHang, CCCD, Email, Username, Diem, Loai)
 VALUES (1, '000000', 'a@gmail.com', 'Phuc', 0, 1),
@@ -118,11 +118,11 @@ MODIFY COLUMN MaKhachHang VARCHAR(8);
 UPDATE KHACHHANG
 SET MaKhachHang = CONCAT ('KH', MaKhachHang);
 -- @block 14 GOIDICHVU --
-INSERT INTO GOIDICHVU (TenGoi, SoNgay, SoKhach)
-VALUES ('Goi1', 1, 1),
-    ('Goi2', 2, 2),
-    ('Goi3', 3, 3),
-    ('Goi4', 4, 4);
+INSERT INTO GOIDICHVU (TenGoi, SoNgay, SoKhach, Gia)
+VALUES ('Goi1', 1, 1, 1000),
+    ('Goi2', 2, 2, 2000),
+    ('Goi3', 3, 3, 3000),
+    ('Goi4', 4, 4, 4000);
 -- @block 15 HOADONGOIDICHVU --
 INSERT INTO HOADONGOIDICHVU (
         HDGDV_MKH,
@@ -192,6 +192,7 @@ VALUES (
         '2022-08-18 01:41:43',
         '2022-10-20 07:24:45',
         2,
+        3000,
         'KH000003',
         'Goi3'
     ),
@@ -200,6 +201,7 @@ VALUES (
         '2022-09-08 18:37:16',
         '2022-10-30 18:35:19',
         3,
+        4000,
         'KH000004',
         'Goi4'
     );
@@ -208,16 +210,62 @@ MODIFY COLUMN MaDatPhong VARCHAR(16);
 UPDATE DONDATPHONG
 SET MaDatPhong = CONCAT (
         'DP',
-        CURDATE() + 0,
+        '28112022',
         MaDatPhong
     );
 -- @block 17 PHONGTHUE --
-INSERT INTO PHONGTHUE (PT_MCN, PT_SP)
-VALUES ('CN1', 101),
-    ('CN2', 202),
-    ('CN3', 303),
-    ('CN4', 404);
-ALTER TABLE PHONGTHUE
-MODIFY COLUMN PT_MDP VARCHAR(16);
-UPDATE PHONGTHUE
-SET PT_MDP = CONCAT ('DP', CURDATE() + 0, PT_MDP);
+INSERT INTO PHONGTHUE (PT_MDP, PT_MCN, PT_SP)
+VALUES ('DP28112022000001', 'CN1', 101),
+    ('DP28112022000002', 'CN2', 202),
+    ('DP28112022000003', 'CN3', 303),
+    ('DP28112022000004', 'CN4', 404);
+-- @block 18 HOADON --
+INSERT INTO HOADON (ThoiGianNhanPhong, ThoiGianTraPhong, HD_MDP)
+VALUES ('12:09:20', '11:01:05', 'DP28112022000001'),
+    ('04:36:37', '00:38:31', 'DP28112022000002'),
+    ('01:41:43', '07:24:45', 'DP28112022000003'),
+    ('18:37:16', '18:35:19', 'DP28112022000004');
+ALTER TABLE HOADON
+MODIFY COLUMN MaHoaDon VARCHAR(16);
+UPDATE HOADON
+SET MaHoaDon = CONCAT('HD', '28112022', MaHoaDon);
+-- @block 19 DOANHNGHIEP --
+INSERT INTO DOANHNGHIEP (MaDoanhNghiep, TenDoanhNghiep)
+VALUES (1, 'Google'),
+    (2, 'Meta'),
+    (3, 'Apple'),
+    (4, 'Microsoft');
+ALTER TABLE DOANHNGHIEP
+MODIFY COLUMN MaDoanhNghiep VARCHAR(6);
+UPDATE DOANHNGHIEP
+SET MaDoanhNghiep = CONCAT ('DN', MaDoanhNghiep);
+-- @block 20 DICHVU --
+INSERT INTO DICHVU (MaDichVu, LoaiDichVu, SoKhach, PhongCach, DV_MDN)
+VALUES ('DVS001', 'S', 1, 'MX', 'DN0003'),
+    ('DVS002', 'S', 1, 'NN', 'DN0003'),
+    ('DVS003', 'S', 1, 'CD', 'DN0003'),
+    ('DVS004', 'S', 1, 'XH', 'DN0003'),
+    ('DVM001', 'M', 1, 'MK', 'DN0004'),
+    ('DVM002', 'M', 1, 'NV', 'DN0004'),
+    ('DVM003', 'M', 1, 'AT', 'DN0004'),
+    ('DVM004', 'M', 1, 'CA', 'DN0004');
+-- @block 21 DICHVUSPA --
+INSERT INTO DICHVUSPA (DVS_MDV, DichVuSpa)
+VALUES ('DVS001', 'MAT XA'),
+    ('DVS001', 'NGAM NUOC'),
+    ('DVS001', 'CHUOM DA'),
+    ('DVS001', 'XONG HOI');
+-- @block 22 LOAIHANGDOLUUNIEM --
+INSERT INTO LOAIHANGDOLUUNIEM (LHDLN_MDV, LoaiHang)
+VALUES ('DVM001', 'MOC KHOA'),
+    ('DVM002', 'NON VAI'),
+    ('DVM003', 'AO THUN'),
+    ('DVM004', 'CHUP ANH');
+-- @block 23 THUONGHIEUDOLUUNIEM --
+INSERT INTO THUONGHIEUDOLUUNIEM (THDLN_MDV, ThuongHieu)
+VALUES ('DVM001', 'GUCCI'),
+    ('DVM002', 'DOLCE'),
+    ('DVM003', 'COOLMATE'),
+    ('DVM004', 'FUMA');
+-- @block 24 MATBANG --
+INSERT INTO MATBANG ()
