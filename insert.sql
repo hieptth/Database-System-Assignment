@@ -69,3 +69,13 @@ VALUES ('CN1', '101', 'THANH HOA', 1),
     ('CN2', '202', 'BRAZIL', 2),
     ('CN3', '303', 'HAI PHONG', 3),
     ('CN4', '404', 'HELL', 4);
+--  @block 8 LOAIVATTU --
+INSERT INTO LOAIVATTU (MaLoaiVatTu, TenLoaiVatTu)
+VALUES (0001, 'Vat tu 1'),
+    (0002, 'Vat tu 2'),
+    (0003, 'Vat tu 3'),
+    (0004, 'Vat tu 4');
+ALTER TABLE LOAIVATTU
+MODIFY COLUMN MaLoaiVatTu varchar(6);
+UPDATE LOAIVATTU
+SET MaLoaiVatTu = CONCAT('VT', MaLoaiVatTu);
