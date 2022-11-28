@@ -547,20 +547,95 @@ CREATE TABLE IF NOT EXISTS MATBANG(
     CONSTRAINT FK_MB_MCN FOREIGN KEY (MB_MCN) REFERENCES CHINHANH(MaChiNhanh) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT PK_MATBANG PRIMARY KEY (MB_MCN)
 );
+
+-- @block 24 MATBANG --
+INSERT INTO MATBANG (
+        MB_MCN,
+        STTMatBang,
+        ChieuDai,
+        ChieuRong,
+        GiaThue,
+        MoTa,
+        MB_MDV,
+        TenCuaHang,
+        Logo
+    )
+VALUES (
+        'CN1',
+        1,
+        5,
+        10,
+        1000,
+        'NULL',
+        'DVM001',
+        'NON SON',
+        'A.COM'
+    ),
+    (
+        'CN2',
+        2,
+        10,
+        15,
+        2000,
+        'NULL',
+        'DVM002',
+        'PHUC LONG',
+        'B.COM'
+    ),
+    (
+        'CN3',
+        3,
+        15,
+        20,
+        3000,
+        'NULL',
+        'DVM003',
+        'GOGI',
+        'C.COM'
+    ),
+    (
+        'CN4',
+        4,
+        20,
+        25,
+        4000,
+        'NULL',
+        'DVM004',
+        'OZ',
+        'D.COM'
+    );
+
 -- @block 25 --
 CREATE TABLE IF NOT EXISTS HINHANHCUAHANG(
     HACH_MCN VARCHAR(50) NOT NULL,
     HACH_STTMatBang INT NOT NULL DEFAULT 1,
     HinhAnh VARCHAR(255),
-    CONSTRAINT FK_HACH_MCN_STTMatBang FOREIGN KEY (HACH_MCN, HACH_STTMatBang) REFERENCES MATBANG(MB_MCN, STTMatBang) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT FK_HACH_MCN FOREIGN KEY (HACH_MCN) REFERENCES MATBANG(MB_MCN) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT FK_HACK_STTMatBang FOREIGN KEY (HACH_STTMatBang) REFERENCES MATBANG(STTMatBang) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT PK_HINHANHCUAHANG PRIMARY KEY (HinhAnh)
 );
+
+-- @block 25 HINHANHCUAHANG --
+INSERT INTO HINHANHCUAHANG (HACH_MCN, HACH_STTMatBang, HinhAnh)
+VALUES ('CN1', 1, 'a.com'),
+    ('CN2', 2, 'b.com'),
+    ('CN3', 3, 'c.com'),
+    ('CN4', 4, 'd.com');
+
 -- @block 26 --
 CREATE TABLE IF NOT EXISTS KHUNGGIOHOATDONG (
     KGHD_MCN VARCHAR(50) NOT NULL,
     KGHD_STTMatBang INT NOT NULL DEFAULT 1,
     GioBatDau TIME,
     GioKetThuc TIME,
-    CONSTRAINT FK_KGHD_MCN_STTMatBang FOREIGN KEY (KGHD_MCN, KGHD_STTMatBang) REFERENCES MATBANG(MB_MCN, STTMatBang) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT FK_KGHD_MCN FOREIGN KEY (KGHD_MCN) REFERENCES MATBANG(MB_MCN) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT FK_KGHD_STTMatBang FOREIGN KEY (KGHD_STTMatBang) REFERENCES MATBANG(STTMatBang) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT PK_KHUNGGIOHOATDONG PRIMARY KEY (GioBatDau)
 );
+
+-- @block 26 KHUNGGIOHOATDONG --
+INSERT INTO KHUNGGIOHOATDONG (KGHD_MCN, KGHD_STTMatBang, GioBatDau, GioKetThuc)
+VALUES ('CN1', 1, '7:00:00', '17:00:00'),
+    ('CN2', 2, '7:15:00', '17:00:00'),
+    ('CN3', 3, '7:30:00', '17:00:00'),
+    ('CN4', 4, '7:45:00', '17:00:00');

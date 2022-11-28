@@ -268,4 +268,70 @@ VALUES ('DVM001', 'GUCCI'),
     ('DVM003', 'COOLMATE'),
     ('DVM004', 'FUMA');
 -- @block 24 MATBANG --
-INSERT INTO MATBANG ()
+INSERT INTO MATBANG (
+        MB_MCN,
+        STTMatBang,
+        ChieuDai,
+        ChieuRong,
+        GiaThue,
+        MoTa,
+        MB_MDV,
+        TenCuaHang,
+        Logo
+    )
+VALUES (
+        'CN1',
+        1,
+        5,
+        10,
+        1000,
+        'NULL',
+        'DVM001',
+        'NON SON',
+        'A.COM'
+    ),
+    (
+        'CN2',
+        2,
+        10,
+        15,
+        2000,
+        'NULL',
+        'DVM002',
+        'PHUC LONG',
+        'B.COM'
+    ),
+    (
+        'CN3',
+        3,
+        15,
+        20,
+        3000,
+        'NULL',
+        'DVM003',
+        'GOGI',
+        'C.COM'
+    ),
+    (
+        'CN4',
+        4,
+        20,
+        25,
+        4000,
+        'NULL',
+        'DVM004',
+        'OZ',
+        'D.COM'
+    );
+-- @block 25 HINHANHCUAHANG --
+INSERT INTO HINHANHCUAHANG (HACH_MCN, HACH_STTMatBang, HinhAnh)
+VALUES ('CN1', 1, 'a.com'),
+    ('CN2', 2, 'b.com'),
+    ('CN3', 3, 'c.com'),
+    ('CN4', 4, 'd.com');
+-- @block 26 KHUNGGIOHOATDONG --
+INSERT INTO KHUNGGIOHOATDONG (KGHD_MCN, KGHD_STTMatBang, GioBatDau, GioKetThuc)
+VALUES ('CN1', 1, '7:00:00', '17:00:00'),
+    ('CN2', 2, '7:15:00', '17:00:00'),
+    ('CN3', 3, '7:30:00', '17:00:00'),
+    ('CN4', 4, '7:45:00', '17:00:00');
