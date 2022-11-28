@@ -66,7 +66,7 @@ CREATE TABLE PHONG (
 );
 -- @block 8 -- MaLoaiVatTu is of type VT0001
 CREATE TABLE LOAIVATTU(
-    MaLoaiVatTu VARCHAR(6) NOT NULL,
+    MaLoaiVatTu INT(4) ZEROFILL NOT NULL,
     TenLoaiVatTu VARCHAR(50) NOT NULL,
     CONSTRAINT PK_LOAIVATTU PRIMARY KEY (MaLoaiVatTu)
 );
@@ -94,7 +94,7 @@ CREATE TABLE VATTU (
 );
 -- @block 11 -- MaNhaCungCap is of type NCC0001
 CREATE TABLE NHACUNGCAP (
-    MaNhaCungCap VARCHAR(7) NOT NULL,
+    MaNhaCungCap INT(4) ZEROFILL NOT NULL,
     TenNhaCungCap VARCHAR(50) NOT NULL,
     Email VARCHAR(50),
     DiaChi VARCHAR(255) NOT NULL,

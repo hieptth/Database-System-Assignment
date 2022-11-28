@@ -71,11 +71,33 @@ VALUES ('CN1', '101', 'THANH HOA', 1),
     ('CN4', '404', 'HELL', 4);
 --  @block 8 LOAIVATTU --
 INSERT INTO LOAIVATTU (MaLoaiVatTu, TenLoaiVatTu)
-VALUES (0001, 'Vat tu 1'),
-    (0002, 'Vat tu 2'),
-    (0003, 'Vat tu 3'),
-    (0004, 'Vat tu 4');
+VALUES (1, 'Vat tu 1'),
+    (2, 'Vat tu 2'),
+    (3, 'Vat tu 3'),
+    (4, 'Vat tu 4');
 ALTER TABLE LOAIVATTU
-MODIFY COLUMN MaLoaiVatTu varchar(6);
+MODIFY COLUMN MaLoaiVatTu VARCHAR(6);
 UPDATE LOAIVATTU
 SET MaLoaiVatTu = CONCAT('VT', MaLoaiVatTu);
+-- @block 9 LOAIVATTU_TRONG_LOAIPHONG --
+INSERT INTO LOAIVATTU_TRONG_LOAIPHONG(Trong_MLVT, Trong_MLP, SoLuong)
+VALUES (1, 1,),
+    (2, 2, 2),
+    (3, 3, 3),
+    (4, 4, 4);
+-- @block 10 VATTU --
+INSERT INTO VATTU (VT_MCN, VT_MLVT, STTVatTu, TinhTrang, VT_SP)
+VALUES ('CN1', 'VT0001', 1, 'TOT', 101),
+    ('CN2', 'VT0002', 2, 'TOT', 202),
+    ('CN3', 'VT0003', 3, 'TOT', 303),
+    ('CN4', 'VT0004', 4, 'TOT', 404);
+-- @block 11 NHACUNGCAP --
+INSERT INTO NHACUNGCAP (MaNhaCungCap, TenNhaCungCap, Email, DiaChi)
+VALUES (1, 'Hiep', 'tthh@gmail.com', '1 ltk'),
+    (2, 'Khoa', 'nmmk@gmail.com', '2 ltk'),
+    (3, 'Duy', 'lkd@gmail.com', '3 ltk'),
+    (1000, 'Hung', 'tpmh@gmail.com', '4 ltk');
+ALTER TABLE NHACUNGCAP
+MODIFY COLUMN MaNhaCungCap VARCHAR(7);
+UPDATE NHACUNGCAP
+SET MaNhaCungCap = CONCAT('NCC', MaNhaCungCap);
