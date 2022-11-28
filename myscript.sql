@@ -37,7 +37,7 @@ CREATE TABLE LOAIPHONG (
 -- @block 5 --
 CREATE TABLE THONGTINGIUONG (
     TTG_MLP INT,
-    KichThuoc DECIMAL(1, 1) NOT NULL,
+    KichThuoc DECIMAL(3, 1) NOT NULL,
     SoLuong INT NOT NULL DEFAULT 1 CHECK(
         SoLuong > 0
         AND SoLuong < 11
