@@ -60,12 +60,20 @@ DELIMITER \\
 CREATE TRIGGER update_TongTienGoiDichVu
 AFTER INSERT ON HOADONGOIDICHVU FOR EACH ROW
 BEGIN
-    SELECT Loai FROM KHACHHANG WHERE MaKhachHang = HDGDV_MKH,
-    CASE
-        WHEN Loai = 2 THEN SET NEW.TongTien = (SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG)*9/10;
-        WHEN Loai = 3 THEN SET NEW.TongTien = (SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG)*17/20;
-        WHEN Loai = 4 THEN SET NEW.TongTien = (SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG)*4/5;
-    END;
+    DECLARE temp INT DEFAULT 1;
+    SET temp = SELECT Loai FROM KHACHHANG WHERE MaKhachHang = HDGDV_MKH;
+    CASE temp
+        WHEN 2 THEN SET NEW.TongTien = (SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG)*9/10;
+        WHEN 3 THEN 
+            SET NEW.SoNgaySuDungConLai = SoNgaySuDungConLai + 1;
+            SET NEW.TongTien = (SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG)*17/20;
+        WHEN 4 THEN
+            SET NEW.SoNgaySuDungConLai = SoNgaySuDungConLai + 2;
+            SET NEW.TongTien = (SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG)*4/5;
+        ELSE 
+            BEGIN
+            END;
+    END CASE;
 END \\
 DELIMITER ;
 

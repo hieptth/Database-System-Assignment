@@ -223,7 +223,9 @@ CREATE TABLE IF NOT EXISTS KHACHHANG(
     Email VARCHAR(50) NOT NULL UNIQUE,
     Username VARCHAR(50) NOT NULL UNIQUE,
     Diem INT NOT NULL DEFAULT 0 CHECK(Diem > -1),
-    Loai INT NOT NULL DEFAULT 1 CHECK(Loai > -1),
+    Loai INT NOT NULL DEFAULT 1 CHECK(
+        Loai BETWEEN 1 AND 4
+    ),
     CONSTRAINT PK_KHACHHANG PRIMARY KEY (MaKhachHang)
 );
 -- @block 13 KHACHHANG --
@@ -304,7 +306,8 @@ VALUES (
     );
 ALTER TABLE HOADONGOIDICHVU
 ADD SoNgaySuDungConLai INT;
-/* thay đổi số ngày dựa trên đơn đặt phòng có DDP_TG not null */
+UPDATE HOADONGOIDICHVU
+SET NEW.SoNgaySuDungConLai = (SELECT SoNgay FROM GOIDICHVU WHERE HDGDV_TG = TenGoi);
 -- @block 16 --
 CREATE TABLE IF NOT EXISTS DONDATPHONG (
     MaDatPhong INT(6) ZEROFILL AUTO_INCREMENT,
@@ -340,7 +343,7 @@ VALUES (
         0,
         1000,
         'KH000001',
-        'Goi1'
+        NULL
     ),
     (
         '2022-03-03 19:03:34',
@@ -349,14 +352,14 @@ VALUES (
         1,
         2000,
         'KH000002',
-        'Goi2'
+        NULL
     ),
     (
         '2022-04-10 09:00:02',
         '2022-08-18 01:41:43',
         '2022-10-20 07:24:45',
         2,
-        3000,
+        0,
         'KH000003',
         'Goi3'
     ),
@@ -365,7 +368,7 @@ VALUES (
         '2022-09-08 18:37:16',
         '2022-10-30 18:35:19',
         3,
-        4000,
+        0,
         'KH000004',
         'Goi4'
     );
