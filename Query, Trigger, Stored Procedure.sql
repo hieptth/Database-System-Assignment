@@ -7,7 +7,8 @@ BEGIN
     DECLARE count int DEFAULT 0;
     SET count = SELECT COUNT(HDGDV_MKH) FROM HOADONGOIDICHVU WHERE HDGDV_MKH = MaKhachHang;
     IF count > 0 THEN
-        SELECT HOADONGOIDICHVU.HDGDV_TG, GOIDICHVU.SoKhach, HOADONGOIDICHVU.SoNgaySuDungConLai
+        SELECT HOADONGOIDICHVU.HDGDV_TG, GOIDICHVU.SoKhach, HOADONGOIDICHVU.NgayBatDau, HOADONGOIDICHVU.SoNgaySuDungConLai,
+                ADDDATE(HOADONGOIDICHVU.NgayBatDau, INTERVAL GOIDICHVU.SoNgay) AS NgayKetThuc
         FROM (HOADONGOIDICHVU INNER JOIN GOIDICHVU ON HOADONGOIDICHVU.HDGDV_TG = GOIDICHVU.TenGoi)
         WHERE HOADONGOIDICHVU.HDGDV_MKH = MaKhachHang;
     /* missing Ngay Het Han */
@@ -24,13 +25,13 @@ BEGIN
     DECLARE temp INT DEFAULT 1;
     SET temp = SELECT Loai FROM KHACHHANG WHERE MaKhachHang = HDGDV_MKH;
     CASE temp
-        WHEN 2 THEN SET NEW.TongTien = (SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG)*9/10;
+        WHEN 2 THEN SET TongTien = (SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG)*9/10;
         WHEN 3 THEN 
-            SET NEW.SoNgaySuDungConLai = SoNgaySuDungConLai + 1;
-            SET NEW.TongTien = (SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG)*17/20;
+            SET SoNgaySuDungConLai = SoNgaySuDungConLai + 1;
+            SET TongTien = (SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG)*17/20;
         WHEN 4 THEN
-            SET NEW.SoNgaySuDungConLai = SoNgaySuDungConLai + 2;
-            SET NEW.TongTien = (SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG)*4/5;
+            SET SoNgaySuDungConLai = SoNgaySuDungConLai + 2;
+            SET TongTien = (SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG)*4/5;
         ELSE 
             BEGIN
             END;
@@ -47,15 +48,15 @@ BEGIN
     SET temp = SELECT Loai FROM KHACHHANG WHERE MaKhachHang = DDP_MKH;
     IF DDP_TG IS NULL THEN
         CASE temp
-            WHEN 2 THEN SET NEW.TongTien = TongTien*9/10;
-            WHEN 3 THEN SET NEW.TongTien = TongTien*17/20;
-            WHEN 4 THEN SET NEW.TongTien = TongTien*4/5;
+            WHEN 2 THEN SET TongTien = TongTien*9/10;
+            WHEN 3 THEN SET TongTien = TongTien*17/20;
+            WHEN 4 THEN SET TongTien = TongTien*4/5;
         END CASE;
     ELSE
     BEGIN
-        SET NEW.TongTien = 0;
+        SET TongTien = 0;
         UPDATE HOADONGOIDICHVU
-        SET NEW.SoNgaySuDungConLai = SoNgaySuDungConLai - TIMESTAMPDIFF(DAY, DONDATPHONG.NgayNhanPhong, DONDATPHONG.NgayTraPhong);
+        SET SoNgaySuDungConLai = SoNgaySuDungConLai - TIMESTAMPDIFF(DAY, DONDATPHONG.NgayNhanPhong, DONDATPHONG.NgayTraPhong);
     END;
 END \\
 DELIMITER ;
@@ -65,7 +66,7 @@ DELIMITER \\
 CREATE TRIGGER update_Diem
 AFTER INSERT ON KHACHHANG FOR EACH ROW
 BEGIN
-    SET NEW.Diem = FLOOR(((SELECT TongTien FROM HOADONGOIDICHVU WHERE HDGDV_MKH = MaKhachHang) + (SELECT TongTien FROM DONDATPHONG WHERE DDP_MKH = MaKhachHang))/1000);
+    SET Diem = FLOOR(((SELECT TongTien FROM HOADONGOIDICHVU WHERE HDGDV_MKH = MaKhachHang) + (SELECT TongTien FROM DONDATPHONG WHERE DDP_MKH = MaKhachHang))/1000);
 END \\
 DELIMITER ;
 
@@ -74,10 +75,10 @@ DELIMITER \\
 CREATE TRIGGER update_LoaiKhachHang
 AFTER INSERT ON KHACHHANG FOR EACH ROW
 BEGIN
-    IF Diem < 50 THEN SET NEW.Loai = 1;
-    ELSEIF Diem < 100 THEN SET NEW.Loai = 2;
-    ELSEIF Diem < 1000 THEN SET NEW.Loai = 3;
-    ELSE SET NEW.Loai = 4;
+    IF Diem < 50 THEN SET Loai = 1;
+    ELSEIF Diem < 100 THEN SET Loai = 2;
+    ELSEIF Diem < 1000 THEN SET Loai = 3;
+    ELSE SET Loai = 4;
 END \\
 DELIMITER ;
 
