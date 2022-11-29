@@ -11,27 +11,27 @@ CREATE TABLE IF NOT EXISTS CHINHANH (
 INSERT INTO CHINHANH (Tinh, DiaChi, DienThoai, Email)
 VALUES (
         'Alime',
-        'OnePiece',
+        '255 Jandex Street, District 13',
         0901392331,
         'ChienHugo111@gmail.com'
     ),
     (
-        'Alimu',
-        'Bleach',
+        'Binary',
+        '1080 Pixel Street, District 144',
         0800281220,
-        'DuySocket222@gmail.com'
+        'DuySocket222@yahoo.com'
     ),
     (
-        'Alumu',
-        'Akame',
+        'Canary',
+        '720 HDMI Street, District 6',
         0833281520,
-        'LokLok322@gmail.com'
+        'LokLok322@hcmut.edu.vn'
     ),
     (
-        'Olumu',
-        'Gintama',
+        'Dharma',
+        '480 Low Res Street, District 64',
         091221120,
-        'ZuZu352@gmail.com'
+        'ZuDuYu52@icloud.com'
     );
 ALTER TABLE CHINHANH
 MODIFY COLUMN MaChiNhanh varchar(50);
