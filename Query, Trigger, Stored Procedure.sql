@@ -16,9 +16,13 @@ BEGIN
 END\\
 -- @block STORED PROCEDURE 2 --
 DROP PROCEDURE IF EXISTS ThongKeLuotKhach\\
-CREATE PROCEDURE ThongKeLuotKhach (IN MaChiNhanh VARCHAR(50), IN NamThongKe INT(5))
+CREATE PROCEDURE ThongKeLuotKhach (IN MCN VARCHAR(50), IN NamThongKe INT(5))
 BEGIN
-
+    SELECT NgayNhanPhong, SUM(SoKhach)
+    FROM (SELECT TinhTrang, SoKhach, PT_MCN, NgayNhanPhong FROM DONDATPHONG INNER JOIN PHONGTHUE ON MaDatPhong = PT_MDP)
+    WHERE PT_MCN = MCN AND TinhTrang = 1 AND YEAR(NgayNhanPhong) = NamThongKe
+    GROUP BY MONTH(NgayNhanPhong)
+    ORDER BY MONTH(NgayNhanPhong);
 END\\
 -- @block TRIGGER 1a --
 DROP TRIGGER IF EXISTS update_TongTienGoiDichVu\\
