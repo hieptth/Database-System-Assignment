@@ -18,8 +18,8 @@ END\\
 DROP PROCEDURE IF EXISTS ThongKeLuotKhach\\
 CREATE PROCEDURE ThongKeLuotKhach (IN MCN VARCHAR(50), IN NamThongKe INT(5))
 BEGIN
-    SELECT NgayNhanPhong, SUM(SoKhach)
-    FROM (SELECT TinhTrang, SoKhach, PT_MCN, NgayNhanPhong FROM DONDATPHONG INNER JOIN PHONGTHUE ON MaDatPhong = PT_MDP)
+    SELECT MONTH(NgayNhanPhong), SUM(SoKhach)
+    FROM (SELECT TinhTrang, SoKhach, PT_MCN, NgayNhanPhong FROM DONDATPHONG INNER JOIN PHONGTHUE ON MaDatPhong = PT_MDP) AS T
     WHERE PT_MCN = MCN AND TinhTrang = 1 AND YEAR(NgayNhanPhong) = NamThongKe
     GROUP BY MONTH(NgayNhanPhong)
     ORDER BY MONTH(NgayNhanPhong);
