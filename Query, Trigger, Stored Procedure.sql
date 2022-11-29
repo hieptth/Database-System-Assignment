@@ -23,7 +23,7 @@ AFTER INSERT ON HOADONGOIDICHVU FOR EACH ROW
 BEGIN
     DECLARE temp INT DEFAULT 1;
     SET temp = (SELECT Loai FROM KHACHHANG WHERE MaKhachHang = HDGDV_MKH);
-    IF temp =2 THEN SET TongTien = ((SELECT GiaFROM GOIDICHVUWHERE TenGoi = HDGDV_TG) * 9 / 10);
+    IF temp = 2 THEN SET NEW.TongTien = ((SELECT GiaFROM GOIDICHVUWHERE TenGoi = HDGDV_TG) * 9 / 10);
     ELSEIF temp = 3 THEN
         BEGIN
             SET NEW.SoNgaySuDungConLai = SoNgaySuDungConLai + 1;
@@ -71,7 +71,7 @@ BEGIN
     IF Diem < 50 THEN SET NEW.Loai = 1;
     ELSEIF Diem < 100 THEN SET NEW.Loai = 2;
     ELSEIF Diem < 1000 THEN SET NEW.Loai = 3;
-    ELSE SET Loai = 4;
+    ELSE SET NEW.Loai = 4;
     END IF;
 END\\
 DELIMITER ;
