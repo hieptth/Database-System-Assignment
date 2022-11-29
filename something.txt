@@ -354,6 +354,7 @@ CREATE TABLE IF NOT EXISTS DONDATPHONG (
     TongTien INT NOT NULL DEFAULT 0 CHECK(TongTien > -1),
     DDP_MKH VARCHAR(8),
     DDP_TG VARCHAR(50),
+    SoKhach INT NOT NULL CHECK (SoKhach > -1),
     CONSTRAINT FK_DDP_MKH FOREIGN KEY (DDP_MKH) REFERENCES KHACHHANG (MaKhachHang) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT FK_DDP_TG FOREIGN KEY (DDP_TG) REFERENCES GOIDICHVU (TenGoi) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT PK_DONDATPHONG PRIMARY KEY (MaDatPhong)
@@ -366,7 +367,8 @@ INSERT INTO DONDATPHONG (
         TinhTrang,
         TongTien,
         DDP_MKH,
-        DDP_TG
+        DDP_TG,
+        SoKhach
     )
 VALUES (
         '2022-02-13 01:51:10',
@@ -375,7 +377,8 @@ VALUES (
         0,
         1000,
         'KH000001',
-        NULL
+        NULL,
+        1
     ),
     (
         '2022-03-03 19:03:34',
@@ -384,7 +387,8 @@ VALUES (
         1,
         2000,
         'KH000002',
-        NULL
+        NULL,
+        2
     ),
     (
         '2022-04-10 09:00:02',
@@ -393,7 +397,8 @@ VALUES (
         2,
         0,
         'KH000003',
-        'Goi3'
+        'Goi3',
+        3
     ),
     (
         '2022-05-02 02:27:49',
@@ -402,7 +407,8 @@ VALUES (
         3,
         0,
         'KH000004',
-        'Goi4'
+        'Goi4',
+        4
     );
 ALTER TABLE DONDATPHONG
 MODIFY COLUMN MaDatPhong VARCHAR(16);
@@ -700,6 +706,19 @@ BEGIN
     ELSEIF Diem < 100 THEN SET NEW.Loai = 2;
     ELSEIF Diem < 1000 THEN SET NEW.Loai = 3;
     ELSE SET NEW.Loai = 4;
+    END IF;
+END\\
+-- @block TRIGGER 2 --
+DROP TRIGGER IF EXISTS constraint_OverlappingPackage\\
+CREATE TRIGGER constraint_OverlappingPackage
+BEFORE INSERT ON HOADONGOIDICHVU FOR EACH ROW
+BEGIN
+    DECLARE temp DATETIME;
+    SET temp = ADDDATE(NgayBatDau, INTERVAL 1 YEAR);
+    IF (EXISTS(SELECT * FROM HOADONGOIDICHVU WHERE HDGDV_TG = NEW.HDGDV_TG)) THEN
+        IF (NEW.NgayBatDau BETWEEN (SELECT NgayBatDau FROM HOADONGOIDICHVU WHERE HDGDV_TG = NEW.HDGDV_TG) AND temp) 
+        THEN signal sqlstate '45000';
+        END IF;
     END IF;
 END\\
 DELIMITER ;

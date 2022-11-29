@@ -167,7 +167,8 @@ INSERT INTO DONDATPHONG (
         TinhTrang,
         TongTien,
         DDP_MKH,
-        DDP_TG
+        DDP_TG,
+        SoKhach
     )
 VALUES (
         '2022-02-13 01:51:10',
@@ -176,7 +177,8 @@ VALUES (
         0,
         1000,
         'KH000001',
-        'Goi1'
+        NULL,
+        1
     ),
     (
         '2022-03-03 19:03:34',
@@ -185,25 +187,28 @@ VALUES (
         1,
         2000,
         'KH000002',
-        'Goi2'
+        NULL,
+        2
     ),
     (
         '2022-04-10 09:00:02',
         '2022-08-18 01:41:43',
         '2022-10-20 07:24:45',
         2,
-        3000,
+        0,
         'KH000003',
-        'Goi3'
+        'Goi3',
+        3
     ),
     (
         '2022-05-02 02:27:49',
         '2022-09-08 18:37:16',
         '2022-10-30 18:35:19',
         3,
-        4000,
+        0,
         'KH000004',
-        'Goi4'
+        'Goi4',
+        4
     );
 ALTER TABLE DONDATPHONG
 MODIFY COLUMN MaDatPhong VARCHAR(16);
