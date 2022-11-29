@@ -1,7 +1,7 @@
 USE MYHOTEL;
 DELIMITER \\
 -- @block STORED PROCEDURE 1 --
-DROP PROCEDURE IF EXISTS GoiDichVu;
+DROP PROCEDURE IF EXISTS GoiDichVu\\
 CREATE PROCEDURE GoiDichVu (IN MaKhachHang VARCHAR(8))
 BEGIN
     DECLARE count int DEFAULT 0;
@@ -15,9 +15,9 @@ BEGIN
     END IF;
 END\\
 -- @block STORED PROCEDURE 2 --
-DROP PROCEDURE IF EXISTS ThongKeLuotKhach;
+DROP PROCEDURE IF EXISTS ThongKeLuotKhach\\
 -- @block TRIGGER 1a --
-DROP TRIGGER IF EXISTS update_TongTienGoiDichVu;
+DROP TRIGGER IF EXISTS update_TongTienGoiDichVu\\
 CREATE TRIGGER update_TongTienGoiDichVu
 AFTER INSERT ON HOADONGOIDICHVU FOR EACH ROW
 BEGIN
@@ -37,18 +37,17 @@ BEGIN
     END IF;
 END\\
 -- @block TRIGGER 1b --
-DROP TRIGGER IF EXISTS update_TongTienDonDatPhong;
+DROP TRIGGER IF EXISTS update_TongTienDonDatPhong\\
 CREATE TRIGGER update_TongTienDonDatPhong
 AFTER INSERT ON DONDATPHONG FOR EACH ROW
 BEGIN
     DECLARE temp INT DEFAULT 1;
     SET temp = (SELECT Loai FROM KHACHHANG WHERE MaKhachHang = DDP_MKH);
     IF DDP_TG IS NULL THEN
-        BEGIN
             IF temp = 2 THEN SET NEW.TongTien = TongTien * 9 / 10;
-            IF temp = 3 THEN SET NEW.TongTien = TongTien * 17 / 20;
-            IF temp = 4 THEN SET NEW.TongTien = TongTien * 4 / 5;
-        END;
+            ELSEIF temp = 3 THEN SET NEW.TongTien = TongTien * 17 / 20;
+            ELSEIF temp = 4 THEN SET NEW.TongTien = TongTien * 4 / 5;
+            END IF;
     ELSE
         BEGIN
             SET NEW.TongTien = 0;
@@ -58,14 +57,14 @@ BEGIN
     END IF;
 END\\
 -- @block TRIGGER 1c --
-DROP TRIGGER IF EXISTS update_Diem;
+DROP TRIGGER IF EXISTS update_Diem\\
 CREATE TRIGGER update_Diem
 AFTER INSERT ON KHACHHANG FOR EACH ROW
 BEGIN
     SET NEW.Diem = FLOOR(((SELECT TongTien FROM HOADONGOIDICHVU WHERE HDGDV_MKH = MaKhachHang) + (SELECT TongTien FROM DONDATPHONG WHERE DDP_MKH = MaKhachHang)) / 1000);
 END\\
 -- @block TRIGGER 1d --
-DROP TRIGGER IF EXISTS update_LoaiKhachHang;
+DROP TRIGGER IF EXISTS update_LoaiKhachHang\\
 CREATE TRIGGER update_LoaiKhachHang
 AFTER INSERT ON KHACHHANG FOR EACH ROW
 BEGIN
