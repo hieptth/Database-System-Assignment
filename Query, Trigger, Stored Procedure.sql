@@ -1,6 +1,7 @@
+USE MYHOTEL;
+DELIMITER \\
 -- @block STORED PROCEDURE --
 DROP PROCEDURE IF EXISTS GoiDichVu;
-DELIMITER \\
 CREATE PROCEDURE GoiDichVu (IN MaKhachHang VARCHAR(8))
 BEGIN
     DECLARE count int DEFAULT 0;
@@ -12,11 +13,9 @@ BEGIN
     WHERE HOADONGOIDICHVU.HDGDV_MKH = MaKhachHang;
     ELSE SELECT CONCAT('YOUR PARAMETER ',MaKhachHang,' DOES NOT EXIST!') AS 'ERROR';
     END IF;
-END \\
-DELIMITER ;
+END\\
 -- @block TRIGGER 1a --
 DROP TRIGGER IF EXISTS update_TongTienGoiDichVu;
-DELIMITER \\
 CREATE TRIGGER update_TongTienGoiDichVu
 AFTER INSERT ON HOADONGOIDICHVU FOR EACH ROW
 BEGIN
@@ -34,11 +33,9 @@ BEGIN
             SET NEW.TongTien = ((SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG) * 4 / 5);
         END;
     END IF;
-END \\
-DELIMITER ;
+END\\
 -- @block TRIGGER 1b --
 DROP TRIGGER IF EXISTS update_TongTienDonDatPhong;
-DELIMITER \\
 CREATE TRIGGER update_TongTienDonDatPhong
 AFTER INSERT ON DONDATPHONG FOR EACH ROW
 BEGIN
@@ -46,38 +43,34 @@ BEGIN
     SET temp = (SELECT Loai FROM KHACHHANG WHERE MaKhachHang = DDP_MKH);
     IF DDP_TG IS NULL THEN
         BEGIN
-            IF temp = 2 THEN SET TongTien = TongTien * 9 / 10;
-            IF temp = 3 THEN SET TongTien = TongTien * 17 / 20;
-            IF temp = 4 THEN SET TongTien = TongTien * 4 / 5;
+            IF temp = 2 THEN SET NEW.TongTien = TongTien * 9 / 10;
+            IF temp = 3 THEN SET NEW.TongTien = TongTien * 17 / 20;
+            IF temp = 4 THEN SET NEW.TongTien = TongTien * 4 / 5;
         END;
     ELSE
         BEGIN
-            SET TongTien = 0;
+            SET NEW.TongTien = 0;
             UPDATE HOADONGOIDICHVU
-            SET SoNgaySuDungConLai = SoNgaySuDungConLai - TIMESTAMPDIFF(DAY, DONDATPHONG.NgayNhanPhong, DONDATPHONG.NgayTraPhong);
+            SET NEW.SoNgaySuDungConLai = SoNgaySuDungConLai - TIMESTAMPDIFF(DAY, DONDATPHONG.NgayNhanPhong, DONDATPHONG.NgayTraPhong);
         END;
     END IF;
-END \\
-DELIMITER ;
+END\\
 -- @block TRIGGER 1c --
 DROP TRIGGER IF EXISTS update_Diem;
-DELIMITER \\
 CREATE TRIGGER update_Diem
 AFTER INSERT ON KHACHHANG FOR EACH ROW
 BEGIN
-    SET Diem = FLOOR(((SELECT TongTien FROM HOADONGOIDICHVU WHERE HDGDV_MKH = MaKhachHang) + (SELECT TongTien FROM DONDATPHONG WHERE DDP_MKH = MaKhachHang)) / 1000);
-END \\
-DELIMITER ;
+    SET NEW.Diem = FLOOR(((SELECT TongTien FROM HOADONGOIDICHVU WHERE HDGDV_MKH = MaKhachHang) + (SELECT TongTien FROM DONDATPHONG WHERE DDP_MKH = MaKhachHang)) / 1000);
+END\\
 -- @block TRIGGER 1d --
 DROP TRIGGER IF EXISTS update_LoaiKhachHang;
-DELIMITER \\
 CREATE TRIGGER update_LoaiKhachHang
 AFTER INSERT ON KHACHHANG FOR EACH ROW
 BEGIN
-    IF Diem < 50 THEN SET Loai = 1;
-    ELSEIF Diem < 100 THEN SET Loai = 2;
-    ELSEIF Diem < 1000 THEN SET Loai = 3;
+    IF Diem < 50 THEN SET NEW.Loai = 1;
+    ELSEIF Diem < 100 THEN SET NEW.Loai = 2;
+    ELSEIF Diem < 1000 THEN SET NEW.Loai = 3;
     ELSE SET Loai = 4;
     END IF;
-END \\
-DELIMITER ;
+END\\
+DELIMITER;
