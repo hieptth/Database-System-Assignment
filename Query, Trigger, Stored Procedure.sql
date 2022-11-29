@@ -25,13 +25,13 @@ BEGIN
     IF temp =2 THEN SET TongTien = ((SELECT GiaFROM GOIDICHVUWHERE TenGoi = HDGDV_TG) * 9 / 10);
     ELSEIF temp = 3 THEN
         BEGIN
-            SET SoNgaySuDungConLai = SoNgaySuDungConLai + 1;
-            SET TongTien = ((SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG) * 17 / 20);
+            SET NEW.SoNgaySuDungConLai = SoNgaySuDungConLai + 1;
+            SET NEW.TongTien = ((SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG) * 17 / 20);
         END;
     ELSEIF temp = 4 THEN
         BEGIN
-            SET SoNgaySuDungConLai = SoNgaySuDungConLai + 2;
-            SET TongTien = ((SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG) * 4 / 5);
+            SET NEW.SoNgaySuDungConLai = SoNgaySuDungConLai + 2;
+            SET NEW.TongTien = ((SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG) * 4 / 5);
         END;
     END IF;
 END \\
