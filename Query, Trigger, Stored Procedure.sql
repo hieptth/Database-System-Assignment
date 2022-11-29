@@ -1,6 +1,7 @@
 USE myhotel;
-
 /* Procedure 1 -- not completed */
+-- @block STORED PROCEDURE --
+DROP PROCEDURE IF EXISTS GoiDichVu;
 DELIMITER \\
 CREATE PROCEDURE GoiDichVu (
     IN MaKhachHang VARCHAR(8),
@@ -14,9 +15,9 @@ BEGIN
     DECLARE count int DEFAULT 0;
     SET count = SELECT COUNT(HDGDV_MKH) FROM HOADONGOIDICHVU WHERE HDGDV_MKH = MaKhachHang;
     IF count > 0 THEN
-        SET TG = SELECT HDGDV_TG FROM HOADONGOIDICHVU WHERE HDGDV_MKH = MaKhachHang;
-        SET SK = SELECT SoKhach FROM GOIDICHVU WHERE TenGoi = TG;
-        SET NBD = SELECT NgayBatDau FROM HOADONGOIDICHVU WHERE HDGDV_MKH = MaKhachHang;
+        SELECT HDGDV_TG INTO TG FROM HOADONGOIDICHVU WHERE HDGDV_MKH = MaKhachHang;
+        SELECT SoKhach INTO SK FROM GOIDICHVU WHERE TenGoi = TG;
+        SELECT NgayBatDau INTO NBD FROM HOADONGOIDICHVU WHERE HDGDV_MKH = MaKhachHang;
         SET NHH = NBD + (SELECT SoNgay);
     ELSE
         SET TG = '';
@@ -29,6 +30,31 @@ BEGIN
 END \\
 DELIMITER ;
 
+-- @block STORED PROCEDURE --
+DROP PROCEDURE IF EXISTS GoiDichVu;
+DELIMITER \\
+CREATE PROCEDURE GoiDichVu ( IN MaKhachHang VARCHAR(8) )
+BEGIN
+    DECLARE count int DEFAULT 0;
+    SET count = SELECT COUNT(HDGDV_MKH) FROM HOADONGOIDICHVU WHERE HDGDV_MKH = MaKhachHang;
+    IF count > 0 THEN
+        SELECT HDGDV_TG FROM HOADONGOIDICHVU WHERE HDGDV_MKH = MaKhachHang;
+        SELECT SoKhach FROM GOIDICHVU WHERE TenGoi = TG;
+        SET SK = SELECT SoKhach FROM GOIDICHVU WHERE TenGoi = TG;
+        SET NBD = SELECT NgayBatDau FROM HOADONGOIDICHVU WHERE HDGDV_MKH = MaKhachHang;
+        SET NHH = NBD + (SELECT SoNgay);
+    ELSE SELECT CONCAT('YOUR PARAMETER ', MaKhachHang, 'DOES NOT EXIST!') AS 'ERROR';
+    END IF;
+END \\
+DELIMITER ;
+
+/*
+Tong tien goi dich vu ko co giảm giá, chỉ thay đổi số ngày theo loại đã được insert sẵn
+tổng tiền hóa đơn giảm giá theo loại được insert sẵn, nếu có apply gói thì tổng tiền 0d
+điểm được tính trên tổng đã giảm giá
+loại được tính lại sau khi update điểm
+*/
+-- @block TRIGGER --
 DROP TRIGGER update_TongTienGoiDichVu;
 DELIMITER \\
 CREATE TRIGGER update_TongTienGoiDichVu

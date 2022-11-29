@@ -229,9 +229,9 @@ CREATE TABLE IF NOT EXISTS KHACHHANG(
 -- @block 13 KHACHHANG --
 INSERT INTO KHACHHANG (MaKhachHang, CCCD, Email, Username, Diem, Loai)
 VALUES (1, '000000', 'a@gmail.com', 'Phuc', 0, 1),
-    (2, '111111', 'b@gmail.com', 'NK', 0, 1),
-    (3, '222222', 'c@gmail.com', 'HH', 0, 1),
-    (4, '333333', 'd@gmail.com', 'TV', 0, 1);
+    (2, '111111', 'b@gmail.com', 'NK', 0, 2),
+    (3, '222222', 'c@gmail.com', 'HH', 0, 3),
+    (4, '333333', 'd@gmail.com', 'TV', 0, 4);
 ALTER TABLE KHACHHANG
 MODIFY COLUMN MaKhachHang VARCHAR(8);
 UPDATE KHACHHANG
@@ -302,6 +302,9 @@ VALUES (
         '2022-9-7 23:59:59',
         4000
     );
+ALTER TABLE HOADONGOIDICHVU
+ADD SoNgaySuDungConLai INT;
+/* thay đổi số ngày dựa trên đơn đặt phòng có DDP_TG not null */
 -- @block 16 --
 CREATE TABLE IF NOT EXISTS DONDATPHONG (
     MaDatPhong INT(6) ZEROFILL AUTO_INCREMENT,
