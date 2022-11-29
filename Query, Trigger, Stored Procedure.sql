@@ -74,4 +74,4 @@ BEGIN
     ELSE SET Loai = 4;
     END IF;
 END\\
-DELIMITER;
+DELIMITER ;
