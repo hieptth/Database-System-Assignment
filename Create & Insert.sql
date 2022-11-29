@@ -1,5 +1,33 @@
-CREATE SCHEMA IF NOT EXISTS MYHOTEL;
+DROP DATABASE IF EXISTS MYHOTEL;
+CREATE DATABASE MYHOTEL;
 USE MYHOTEL;
+-- Drop exists tables to load new ones
+DROP TABLE IF EXISTS chinhanh;
+DROP TABLE IF EXISTS hinhanh_chinhanh;
+DROP TABLE IF EXISTS khu;
+DROP TABLE IF EXISTS loaiphong;
+DROP TABLE IF EXISTS thongtingiuong;
+DROP TABLE IF EXISTS chinhanh_co_loaiphong;
+DROP TABLE IF EXISTS phong;
+DROP TABLE IF EXISTS loaivattu;
+DROP TABLE IF EXISTS loaivattu_trong_loaiphong;
+DROP TABLE IF EXISTS vattu;
+DROP TABLE IF EXISTS nhacungcap;
+DROP TABLE IF EXISTS cungcapvattu;
+DROP TABLE IF EXISTS khachhang;
+DROP TABLE IF EXISTS goidichvu;
+DROP TABLE IF EXISTS hoadongoidichvu;
+DROP TABLE IF EXISTS dondatphong;
+DROP TABLE IF EXISTS phongthue;
+DROP TABLE IF EXISTS hoadon;
+DROP TABLE IF EXISTS doanhnghiep;
+DROP TABLE IF EXISTS dichvu;
+DROP TABLE IF EXISTS dichvuspa;
+DROP TABLE IF EXISTS loaihangdoluuniem;
+DROP TABLE IF EXISTS thuonghieudoluuniem;
+DROP TABLE IF EXISTS matbang;
+DROP TABLE IF EXISTS hinhanhcuahang;
+DROP TABLE IF EXISTS khunggiohoatdong;
 -- @block 1 --
 CREATE TABLE IF NOT EXISTS CHINHANH (
     MaChiNhanh INT NOT NULL AUTO_INCREMENT,
