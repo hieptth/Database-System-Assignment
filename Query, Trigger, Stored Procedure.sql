@@ -82,7 +82,6 @@ BEGIN
     ELSE SET NEW.Loai = 4;
     END IF;
 END\\
-
 -- @block TRIGGER 2 --
 DROP TRIGGER IF EXISTS constraint_OverlappingPackage\\
 CREATE TRIGGER constraint_OverlappingPackage
@@ -97,4 +96,3 @@ BEGIN
     END IF;
 END\\
 DELIMITER ;
-
