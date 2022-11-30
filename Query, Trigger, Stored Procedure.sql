@@ -31,7 +31,7 @@ AFTER INSERT ON HOADONGOIDICHVU FOR EACH ROW
 BEGIN
     DECLARE temp INT DEFAULT 1;
     SET temp = (SELECT Loai FROM KHACHHANG WHERE MaKhachHang = HDGDV_MKH);
-    IF temp = 2 THEN SET NEW.TongTien = ((SELECT GiaFROM GOIDICHVUWHERE TenGoi = HDGDV_TG) * 9 / 10);
+    IF temp = 2 THEN SET NEW.TongTien = ((SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG) * 9 / 10);
     ELSEIF temp = 3 THEN
         BEGIN
             SET NEW.SoNgaySuDungConLai = SoNgaySuDungConLai + 1;
