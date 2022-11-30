@@ -248,7 +248,7 @@ VALUES ('NCC0001', 'VT0001', 'CN1'),
     ('NCC1000', 'VT0004', 'CN4');
 -- @block 13 -- MaKhachHang is of type KH000001
 CREATE TABLE IF NOT EXISTS KHACHHANG (
-    MaKhachHang INT(6) ZEROFILL NOT NULL,
+    MaKhachHang VARCHAR(8) NOT NULL,
     CCCD VARCHAR(12) NOT NULL UNIQUE,
     Email VARCHAR(50) NOT NULL UNIQUE,
     Username VARCHAR(50) NOT NULL UNIQUE,
@@ -258,15 +258,10 @@ CREATE TABLE IF NOT EXISTS KHACHHANG (
 );
 -- @block 13 KHACHHANG --
 INSERT INTO KHACHHANG (MaKhachHang, CCCD, Email, Username, Diem, Loai)
-VALUES (1, '000000', 'a@gmail.com', 'Phuc', 0, 1),
-    (2, '111111', 'b@gmail.com', 'NK', 0, 2),
-    (3, '222222', 'c@gmail.com', 'HH', 0, 3),
-    (4, '333333', 'd@gmail.com', 'TV', 0, 4);
-ALTER TABLE KHACHHANG
-MODIFY COLUMN MaKhachHang VARCHAR(8);
-UPDATE KHACHHANG 
-SET 
-    MaKhachHang = CONCAT('KH', MaKhachHang);
+VALUES ('KH000001', '000000', 'a@gmail.com', 'Phuc', 0, 1),
+    ('KH000002', '111111', 'b@gmail.com', 'NK', 60, 2),
+    ('KH000003', '222222', 'c@gmail.com', 'HH', 520, 3),
+    ('KH000004', '333333', 'd@gmail.com', 'TV', 1006, 4);
 -- @block 14 --
 CREATE TABLE IF NOT EXISTS GOIDICHVU (
     TenGoi VARCHAR(50),
@@ -277,10 +272,10 @@ CREATE TABLE IF NOT EXISTS GOIDICHVU (
 );
 -- @block 14 GOIDICHVU --
 INSERT INTO GOIDICHVU (TenGoi, SoNgay, SoKhach, Gia)
-VALUES ('Goi1', 1, 1, 1000),
-    ('Goi2', 2, 2, 2000),
-    ('Goi3', 3, 3, 3000),
-    ('Goi4', 4, 4, 4000);
+VALUES ('Goi1', 10, 1, 10000),
+    ('Goi2', 25, 2, 20000),
+    ('Goi3', 67, 3, 30000),
+    ('Goi4', 80, 4, 40000);
 -- @block 15 --
 CREATE TABLE IF NOT EXISTS HOADONGOIDICHVU (
     HDGDV_MKH VARCHAR(8),
@@ -288,6 +283,7 @@ CREATE TABLE IF NOT EXISTS HOADONGOIDICHVU (
     NgayGioMua DATETIME NOT NULL,
     NgayBatDau DATETIME NOT NULL,
     TongTien INT NOT NULL,
+    SoNgaySuDungConLai INT DEFAULT NULL,
     CONSTRAINT FK_HDGDV_MKH FOREIGN KEY (HDGDV_MKH)
         REFERENCES KHACHHANG (MaKhachHang)
         ON DELETE CASCADE ON UPDATE CASCADE,
@@ -298,20 +294,10 @@ CREATE TABLE IF NOT EXISTS HOADONGOIDICHVU (
 );
 -- @block 15 HOADONGOIDICHVU --
 INSERT INTO HOADONGOIDICHVU (HDGDV_MKH, HDGDV_TG, NgayGioMua, NgayBatDau, TongTien)
-VALUES ('KH000001','Goi1','2022-1-1 23:59:59','2022-1-2 23:59:59',1000),
-    ('KH000002','Goi2','2022-1-14 23:59:59','2022-1-15 23:59:59',2000),
-    ('KH000003','Goi3','2022-2-26 23:59:59','2022-2-27 23:59:59',3000),
-    ('KH000004','Goi4','2022-9-7 23:59:59','2022-9-7 23:59:59',4000);
-ALTER TABLE HOADONGOIDICHVU
-ADD SoNgaySuDungConLai INT;
-UPDATE HOADONGOIDICHVU 
-SET 
-    SoNgaySuDungConLai = (SELECT 
-            SoNgay
-        FROM
-            GOIDICHVU
-        WHERE
-            HDGDV_TG = TenGoi);
+VALUES ('KH000001','Goi1','2022-1-1 23:59:59','2022-1-2 23:59:59',10000),
+    ('KH000002','Goi2','2022-1-14 23:59:59','2022-1-15 23:59:59',20000),
+    ('KH000003','Goi3','2022-2-26 23:59:59','2022-2-27 23:59:59',30000),
+    ('KH000004','Goi3','2022-9-7 23:59:59','2022-9-7 23:59:59',40000);
 -- @block 16 --
 CREATE TABLE IF NOT EXISTS DONDATPHONG (
     MaDatPhong INT(6) ZEROFILL AUTO_INCREMENT,
@@ -332,56 +318,11 @@ CREATE TABLE IF NOT EXISTS DONDATPHONG (
     CONSTRAINT PK_DONDATPHONG PRIMARY KEY (MaDatPhong)
 );
 -- @block 16 DONDATPHONG --
-INSERT INTO DONDATPHONG (
-        NgayGioDat,
-        NgayNhanPhong,
-        NgayTraPhong,
-        TinhTrang,
-        TongTien,
-        DDP_MKH,
-        DDP_TG,
-        SoKhach
-    )
-VALUES (
-        '2022-02-13 01:51:10',
-        '2022-06-12 12:09:20',
-        '2022-09-19 11:01:05',
-        0,
-        1000,
-        'KH000001',
-        NULL,
-        1
-    ),
-    (
-        '2022-03-03 19:03:34',
-        '2022-06-24 04:36:37',
-        '2022-09-30 00:38:31',
-        1,
-        2000,
-        'KH000002',
-        NULL,
-        2
-    ),
-    (
-        '2022-04-10 09:00:02',
-        '2022-08-18 01:41:43',
-        '2022-10-20 07:24:45',
-        2,
-        0,
-        'KH000003',
-        'Goi3',
-        3
-    ),
-    (
-        '2022-05-02 02:27:49',
-        '2022-09-08 18:37:16',
-        '2022-10-30 18:35:19',
-        3,
-        0,
-        'KH000004',
-        'Goi4',
-        4
-    );
+INSERT INTO DONDATPHONG (NgayGioDat, NgayNhanPhong, NgayTraPhong, TinhTrang, TongTien, DDP_MKH, DDP_TG, SoKhach)
+VALUES ('2022-02-13 01:51:10','2022-06-12 12:09:20','2022-09-19 11:01:05',0,1500,'KH000001',NULL,2),
+    ('2022-03-03 19:03:34','2022-06-24 04:36:37','2022-09-30 00:38:31',1,2300,'KH000002',NULL,4),
+    ('2022-04-10 09:00:02','2022-08-18 01:41:43','2022-10-20 07:24:45',2,0,'KH000003','Goi3',8),
+    ('2022-05-02 02:27:49','2022-09-08 18:37:16','2022-10-30 18:35:19',3,0,'KH000004','Goi4',6);
 ALTER TABLE DONDATPHONG
 MODIFY COLUMN MaDatPhong VARCHAR(16);
 UPDATE DONDATPHONG 
@@ -534,17 +475,7 @@ CREATE TABLE IF NOT EXISTS MATBANG (
     CONSTRAINT PK_MATBANG PRIMARY KEY (MB_MCN)
 );
 -- @block 24 MATBANG --
-INSERT INTO MATBANG (
-        MB_MCN,
-        STTMatBang,
-        ChieuDai,
-        ChieuRong,
-        GiaThue,
-        MoTa,
-        MB_MDV,
-        TenCuaHang,
-        Logo
-    )
+INSERT INTO MATBANG (MB_MCN, STTMatBang, ChieuDai, ChieuRong, GiaThue, MoTa, MB_MDV, TenCuaHang, Logo)
 VALUES ('CN1',1,5,10,1000,'NULL','DVM001','NON SON','A.COM'),
     ('CN2',2,10,15,2000,'NULL','DVM002','PHUC LONG','B.COM'),
     ('CN3',3,15,20,3000,'NULL','DVM003','GOGI','C.COM'),
@@ -588,3 +519,30 @@ VALUES ('CN1', 1, '7:00:00', '17:00:00'),
     ('CN2', 2, '7:15:00', '17:00:00'),
     ('CN3', 3, '7:30:00', '17:00:00'),
     ('CN4', 4, '7:45:00', '17:00:00');
+USE MYHOTEL;
+DELIMITER \\
+-- @block STORED PROCEDURE 1 --
+DROP PROCEDURE IF EXISTS GoiDichVu\\
+CREATE PROCEDURE GoiDichVu (IN MaKhachHang VARCHAR(8))
+BEGIN
+    DECLARE count int DEFAULT 0;
+    SET count = (SELECT COUNT(HDGDV_MKH) FROM HOADONGOIDICHVU WHERE HDGDV_MKH = MaKhachHang);
+    IF count > 0 THEN
+    SELECT HOADONGOIDICHVU.HDGDV_TG AS 'Tên Gói', GOIDICHVU.SoKhach AS 'Số Khách', HOADONGOIDICHVU.NgayBatDau AS 'Ngày Bắt đầu', 
+            ADDDATE(HOADONGOIDICHVU.NgayBatDau, INTERVAL GOIDICHVU.SoNgay DAY) AS 'Ngày kết thúc', HOADONGOIDICHVU.SoNgaySuDungConLai AS 'Số ngày sử dụng còn lại'
+    FROM (HOADONGOIDICHVU INNER JOIN GOIDICHVU ON HOADONGOIDICHVU.HDGDV_TG = GOIDICHVU.TenGoi)
+    WHERE HOADONGOIDICHVU.HDGDV_MKH = MaKhachHang;
+    ELSE SELECT CONCAT('YOUR PARAMETER ',MaKhachHang,' DOES NOT EXIST!') AS 'ERROR';
+    END IF;
+END\\
+-- @block STORED PROCEDURE 2 --
+DROP PROCEDURE IF EXISTS ThongKeLuotKhach\\
+CREATE PROCEDURE ThongKeLuotKhach (IN MCN VARCHAR(50), IN NamThongKe INT(5))
+BEGIN
+    SELECT MONTH(NgayNhanPhong) AS 'Tháng', SUM(SoKhach) AS 'Tổng số lượt khách'
+    FROM (SELECT TinhTrang, SoKhach, PT_MCN, NgayNhanPhong FROM DONDATPHONG INNER JOIN PHONGTHUE ON MaDatPhong = PT_MDP) AS T
+    WHERE PT_MCN = MCN AND TinhTrang = 1 AND YEAR(NgayNhanPhong) = NamThongKe
+    GROUP BY MONTH(NgayNhanPhong)
+    ORDER BY MONTH(NgayNhanPhong);
+END\\
+DELIMITER ;
