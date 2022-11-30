@@ -259,9 +259,9 @@ CREATE TABLE IF NOT EXISTS KHACHHANG (
 -- @block 13 KHACHHANG --
 INSERT INTO KHACHHANG (MaKhachHang, CCCD, Email, Username, Diem, Loai)
 VALUES (1, '000000', 'a@gmail.com', 'Phuc', 0, 1),
-    (2, '111111', 'b@gmail.com', 'NK', 0, 2),
-    (3, '222222', 'c@gmail.com', 'HH', 0, 3),
-    (4, '333333', 'd@gmail.com', 'TV', 0, 4);
+    (2, '111111', 'b@gmail.com', 'NK', 60, 2),
+    (3, '222222', 'c@gmail.com', 'HH', 520, 3),
+    (4, '333333', 'd@gmail.com', 'TV', 1006, 4);
 ALTER TABLE KHACHHANG
 MODIFY COLUMN MaKhachHang VARCHAR(8);
 UPDATE KHACHHANG 
@@ -277,10 +277,10 @@ CREATE TABLE IF NOT EXISTS GOIDICHVU (
 );
 -- @block 14 GOIDICHVU --
 INSERT INTO GOIDICHVU (TenGoi, SoNgay, SoKhach, Gia)
-VALUES ('Goi1', 10, 1, 1000),
-    ('Goi2', 25, 2, 2000),
-    ('Goi3', 67, 3, 3000),
-    ('Goi4', 80, 4, 4000);
+VALUES ('Goi1', 10, 1, 100000),
+    ('Goi2', 25, 2, 200000),
+    ('Goi3', 67, 3, 300000),
+    ('Goi4', 80, 4, 400000);
 -- @block 15 --
 CREATE TABLE IF NOT EXISTS HOADONGOIDICHVU (
     HDGDV_MKH VARCHAR(8),
@@ -297,6 +297,22 @@ CREATE TABLE IF NOT EXISTS HOADONGOIDICHVU (
         ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT PK_HOADONGOIDICHVU PRIMARY KEY (NgayGioMua)
 );
+-- @block TRIGGER 2 --
+DELIMITER \\
+DROP TRIGGER IF EXISTS constraint_OverlappingPackage\\
+CREATE TRIGGER constraint_OverlappingPackage
+BEFORE INSERT ON HOADONGOIDICHVU FOR EACH ROW
+BEGIN
+    DECLARE msg VARCHAR(255);
+    SET msg = 'OVERLAPPING RENTAL PACKAGE PURCHASE!';
+    IF (EXISTS(SELECT * FROM HOADONGOIDICHVU WHERE HDGDV_TG = NEW.HDGDV_TG)) THEN
+        IF (NEW.NgayBatDau BETWEEN (SELECT NgayBatDau FROM HOADONGOIDICHVU WHERE HDGDV_TG = NEW.HDGDV_TG AND HDGDV_MKH = NEW.HDGDV_MKH)
+			AND (SELECT ADDDATE(NgayBatDau, INTERVAL 1 YEAR) FROM HOADONGOIDICHVU WHERE HDGDV_TG = NEW.HDGDV_TG AND HDGDV_MKH = NEW.HDGDV_MKH)) 
+        THEN SIGNAL sqlstate '45000' SET message_text = msg;
+        END IF;
+    END IF;
+END\\
+DELIMITER ;
 -- @block TRIGGER 1a --
 DELIMITER \\
 DROP TRIGGER IF EXISTS update_TongTienGoiDichVu\\
@@ -321,10 +337,10 @@ END\\
 DELIMITER ;
 -- @block 15 HOADONGOIDICHVU --
 INSERT INTO HOADONGOIDICHVU (HDGDV_MKH, HDGDV_TG, NgayGioMua, NgayBatDau, TongTien)
-VALUES ('KH000001','Goi1','2022-1-1 23:59:59','2022-1-2 23:59:59',1000),
-    ('KH000002','Goi2','2022-1-14 23:59:59','2022-1-15 23:59:59',2000),
-    ('KH000003','Goi3','2022-2-26 23:59:59','2022-2-27 23:59:59',3000),
-    ('KH000004','Goi4','2022-9-7 23:59:59','2022-9-7 23:59:59',4000);
+VALUES ('KH000001','Goi1','2022-1-1 23:59:59','2022-1-2 23:59:59',100000),
+    ('KH000002','Goi2','2022-1-14 23:59:59','2022-1-15 23:59:59',200000),
+    ('KH000003','Goi3','2022-2-26 23:59:59','2022-2-27 23:59:59',300000),
+    ('KH000004','Goi4','2022-9-7 23:59:59','2022-9-7 23:59:59',400000);
 -- @block 16 --
 CREATE TABLE IF NOT EXISTS DONDATPHONG (
     MaDatPhong INT(6) ZEROFILL AUTO_INCREMENT,
@@ -370,61 +386,48 @@ BEGIN
 END\\
 DELIMITER ;
 -- @block 16 DONDATPHONG --
-INSERT INTO DONDATPHONG (
-        NgayGioDat,
-        NgayNhanPhong,
-        NgayTraPhong,
-        TinhTrang,
-        TongTien,
-        DDP_MKH,
-        DDP_TG,
-        SoKhach
-    )
-VALUES (
-        '2022-02-13 01:51:10',
-        '2022-06-12 12:09:20',
-        '2022-09-19 11:01:05',
-        0,
-        1000,
-        'KH000001',
-        NULL,
-        1
-    ),
-    (
-        '2022-03-03 19:03:34',
-        '2022-06-24 04:36:37',
-        '2022-09-30 00:38:31',
-        1,
-        2000,
-        'KH000002',
-        NULL,
-        2
-    ),
-    (
-        '2022-04-10 09:00:02',
-        '2022-08-18 01:41:43',
-        '2022-10-20 07:24:45',
-        2,
-        0,
-        'KH000003',
-        'Goi3',
-        3
-    ),
-    (
-        '2022-05-02 02:27:49',
-        '2022-09-08 18:37:16',
-        '2022-10-30 18:35:19',
-        3,
-        0,
-        'KH000004',
-        'Goi4',
-        4
-    );
+INSERT INTO DONDATPHONG (NgayGioDat, NgayNhanPhong, NgayTraPhong, TinhTrang, TongTien, DDP_MKH, DDP_TG, SoKhach)
+VALUES ('2022-02-13 01:51:10','2022-06-12 12:09:20','2022-09-19 11:01:05',0,150000,'KH000001',NULL,2),
+    ('2022-03-03 19:03:34','2022-06-24 04:36:37','2022-09-30 00:38:31',1,230000,'KH000002',NULL,4),
+    ('2022-04-10 09:00:02','2022-08-18 01:41:43','2022-10-20 07:24:45',2,0,'KH000003','Goi3',8),
+    ('2022-05-02 02:27:49','2022-09-08 18:37:16','2022-10-30 18:35:19',3,0,'KH000004','Goi4',6);
 ALTER TABLE DONDATPHONG
 MODIFY COLUMN MaDatPhong VARCHAR(16);
 UPDATE DONDATPHONG 
 SET 
     MaDatPhong = CONCAT('DP', '28112022', MaDatPhong);
+-- @block TRIGGER 1c --
+DELIMITER \\
+DROP TRIGGER IF EXISTS update_Diem\\
+CREATE TRIGGER update_Diem
+BEFORE INSERT ON DONDATPHONG FOR EACH ROW FOLLOWS update_TongTienDonDatPhong
+BEGIN
+	-- DECLARE MaKH VARCHAR(8);
+    DECLARE SoTienDDP INT;
+    SET SoTienDDP = 1000;
+    -- DECLARE SoTienGDV INT;
+    -- SET MaKH = NEW.DDP_MKH;
+    -- SET SoTienDDP = NEW.TongTien;
+    -- SET SoTienGDV = (SELECT TongTien FROM HOADONGOIDICHVU WHERE HOADONGOIDICHVU.HDGDV_MKH = MaKH);
+    SET NEW.SoKhach = SoTienDDP;
+    -- UPDATE KHACHHANG
+    -- SET Diem = Diem + FLOOR((SoTienDDP + SoTienGDV) / 1000)
+    -- WHERE KHACHHANG.MaKhachHang = MaKH;
+END\\
+DELIMITER ;
+-- @block TRIGGER 1d --
+DELIMITER \\
+DROP TRIGGER IF EXISTS update_LoaiKhachHang\\
+CREATE TRIGGER update_LoaiKhachHang
+BEFORE INSERT ON DONDATPHONG FOR EACH ROW FOLLOWS update_Diem
+BEGIN
+    -- IF Diem < 50 THEN SET NEW.Loai = 1;
+    -- ELSEIF Diem < 100 THEN SET NEW.Loai = 2;
+    -- ELSEIF Diem < 1000 THEN SET NEW.Loai = 3;
+    -- ELSE SET NEW.Loai = 4;
+    -- END IF;
+END\\
+DELIMITER ;
 -- @block 17 --
 CREATE TABLE IF NOT EXISTS PHONGTHUE (
     PT_MDP VARCHAR(16),
@@ -641,37 +644,5 @@ BEGIN
     WHERE PT_MCN = MCN AND TinhTrang = 1 AND YEAR(NgayNhanPhong) = NamThongKe
     GROUP BY MONTH(NgayNhanPhong)
     ORDER BY MONTH(NgayNhanPhong);
-END\\
-
--- @block TRIGGER 1c --
-DROP TRIGGER IF EXISTS update_Diem\\
-CREATE TRIGGER update_Diem
-AFTER INSERT ON KHACHHANG FOR EACH ROW
-BEGIN
-    UPDATE KHACHHANG SET Diem = FLOOR(((SELECT TongTien FROM HOADONGOIDICHVU WHERE HDGDV_MKH = MaKhachHang) + (SELECT TongTien FROM DONDATPHONG WHERE DDP_MKH = MaKhachHang)) / 1000);
-END\\
--- @block TRIGGER 1d --
-DROP TRIGGER IF EXISTS update_LoaiKhachHang\\
-CREATE TRIGGER update_LoaiKhachHang
-AFTER INSERT ON KHACHHANG FOR EACH ROW
-BEGIN
-    IF Diem < 50 THEN UPDATE KHACHHANG SET Loai = 1;
-    ELSEIF Diem < 100 THEN UPDATE KHACHHANG SET Loai = 2;
-    ELSEIF Diem < 1000 THEN UPDATE KHACHHANG SET Loai = 3;
-    ELSE UPDATE KHACHHANG SET Loai = 4;
-    END IF;
-END\\
--- @block TRIGGER 2 --
-DROP TRIGGER IF EXISTS constraint_OverlappingPackage\\
-CREATE TRIGGER constraint_OverlappingPackage
-BEFORE INSERT ON HOADONGOIDICHVU FOR EACH ROW
-BEGIN
-    DECLARE temp DATETIME;
-    SET temp = ADDDATE(NgayBatDau, INTERVAL 1 YEAR);
-    IF (EXISTS(SELECT * FROM HOADONGOIDICHVU WHERE HDGDV_TG = NEW.HDGDV_TG)) THEN
-        IF (NEW.NgayBatDau BETWEEN (SELECT NgayBatDau FROM HOADONGOIDICHVU WHERE HDGDV_TG = NEW.HDGDV_TG) AND temp) 
-        THEN signal sqlstate '45000' SET message_text = 'OVERLAPPING RENTAL PACKAGE PURCHASE!';
-        END IF;
-    END IF;
 END\\
 DELIMITER ;

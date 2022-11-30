@@ -24,54 +24,65 @@ BEGIN
     GROUP BY MONTH(NgayNhanPhong)
     ORDER BY MONTH(NgayNhanPhong);
 END\\
+DELIMITER ;
 -- @block TRIGGER 1a --
+DELIMITER \\
 DROP TRIGGER IF EXISTS update_TongTienGoiDichVu\\
 CREATE TRIGGER update_TongTienGoiDichVu
-AFTER INSERT ON HOADONGOIDICHVU FOR EACH ROW
+BEFORE INSERT ON HOADONGOIDICHVU FOR EACH ROW
 BEGIN
-    DECLARE temp INT DEFAULT 1;
-    SET temp = (SELECT Loai FROM KHACHHANG WHERE MaKhachHang = HDGDV_MKH);
-    IF temp = 2 THEN SET NEW.TongTien = ((SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG) * 9 / 10);
-    ELSEIF temp = 3 THEN
-        BEGIN
-            SET NEW.SoNgaySuDungConLai = SoNgaySuDungConLai + 1;
-            SET NEW.TongTien = ((SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG) * 17 / 20);
-        END;
-    ELSEIF temp = 4 THEN
-        BEGIN
-            SET NEW.SoNgaySuDungConLai = SoNgaySuDungConLai + 2;
-            SET NEW.TongTien = ((SELECT Gia FROM GOIDICHVU WHERE TenGoi = HDGDV_TG) * 4 / 5);
-        END;
+    DECLARE LoaiKH INT;
+    DECLARE SoNgayConLai INT;
+    DECLARE SoTien INT;
+    SET LoaiKH = (SELECT Loai FROM KHACHHANG WHERE KHACHHANG.MaKhachHang = NEW.HDGDV_MKH);
+    SET SoNgayConLai = (SELECT SoNgay FROM GOIDICHVU WHERE GOIDICHVU.TenGoi = NEW.HDGDV_TG);
+    IF LoaiKH = 2 THEN SET SoTien = ((SELECT Gia FROM GOIDICHVU WHERE GOIDICHVU.TenGoi = NEW.HDGDV_TG) * 9 / 10);
+    ELSEIF LoaiKH = 3 THEN SET SoTien = ((SELECT Gia FROM GOIDICHVU WHERE GOIDICHVU.TenGoi = NEW.HDGDV_TG) * 17 / 20),
+							SoNgayConLai = SoNgayConLai + 1;
+    ELSEIF LoaiKH = 4 THEN SET SoTien = ((SELECT Gia FROM GOIDICHVU WHERE GOIDICHVU.TenGoi = NEW.HDGDV_TG) * 4 / 5),
+							SoNgayConLai = SoNgayConLai + 2;
+	ELSE SET SoTien = NEW.TongTien;
     END IF;
+    SET NEW.TongTien = SoTien;
+    SET NEW.SoNgaySuDungConLai = SoNgayConLai;
 END\\
+DELIMITER ;
 -- @block TRIGGER 1b --
+DELIMITER \\
 DROP TRIGGER IF EXISTS update_TongTienDonDatPhong\\
 CREATE TRIGGER update_TongTienDonDatPhong
-AFTER INSERT ON DONDATPHONG FOR EACH ROW
+BEFORE INSERT ON DONDATPHONG FOR EACH ROW
 BEGIN
-    DECLARE temp INT DEFAULT 1;
-    SET temp = (SELECT Loai FROM KHACHHANG WHERE MaKhachHang = DDP_MKH);
-    IF DDP_TG IS NULL THEN
-            IF temp = 2 THEN SET NEW.TongTien = TongTien * 9 / 10;
-            ELSEIF temp = 3 THEN SET NEW.TongTien = TongTien * 17 / 20;
-            ELSEIF temp = 4 THEN SET NEW.TongTien = TongTien * 4 / 5;
-            END IF;
-    ELSE
-        BEGIN
-            SET NEW.TongTien = 0;
-            UPDATE HOADONGOIDICHVU
-            SET NEW.SoNgaySuDungConLai = SoNgaySuDungConLai - TIMESTAMPDIFF(DAY, DONDATPHONG.NgayNhanPhong, DONDATPHONG.NgayTraPhong);
-        END;
+	DECLARE LoaiKH INT;
+    DECLARE SoNgayConLai INT;
+    DECLARE SoTien INT;
+    SET LoaiKH = (SELECT Loai FROM KHACHHANG WHERE KHACHHANG.MaKhachHang = NEW.DDP_MKH);
+    IF NEW.DDP_TG IS NULL THEN
+		IF LoaiKH = 2 THEN SET SoTien = NEW.TongTien * 9 / 10;
+		ELSEIF LoaiKH = 3 THEN SET SoTien = NEW.TongTien * 17 / 20;
+		ELSEIF LoaiKH = 4 THEN SET SoTien = NEW.TongTien * 4 / 5;
+		ELSE SET SoTien = NEW.TongTien;
+        END IF;
+	ELSE 
+		SET SoTien = 0;
+        UPDATE HOADONGOIDICHVU
+        SET SoNgaySuDungConLai = SoNgaySuDungConLai - TIMESTAMPDIFF(DAY, NEW.NgayNhanPhong, NEW.NgayTraPhong)
+        WHERE HOADONGOIDICHVU.HDGDV_TG = NEW.DDP_TG AND HOADONGOIDICHVU.HDGDV_MKH = NEW.DDP_MKH;
     END IF;
+	SET NEW.TongTien = SoTien;
 END\\
+DELIMITER ;
 -- @block TRIGGER 1c --
+DELIMITER \\
 DROP TRIGGER IF EXISTS update_Diem\\
 CREATE TRIGGER update_Diem
 AFTER INSERT ON KHACHHANG FOR EACH ROW
 BEGIN
     SET NEW.Diem = FLOOR(((SELECT TongTien FROM HOADONGOIDICHVU WHERE HDGDV_MKH = MaKhachHang) + (SELECT TongTien FROM DONDATPHONG WHERE DDP_MKH = MaKhachHang)) / 1000);
 END\\
+DELIMITER ;
 -- @block TRIGGER 1d --
+DELIMITER \\
 DROP TRIGGER IF EXISTS update_LoaiKhachHang\\
 CREATE TRIGGER update_LoaiKhachHang
 AFTER INSERT ON KHACHHANG FOR EACH ROW
@@ -82,7 +93,9 @@ BEGIN
     ELSE SET NEW.Loai = 4;
     END IF;
 END\\
+DELIMITER ;
 -- @block TRIGGER 2 --
+DELIMITER \\
 DROP TRIGGER IF EXISTS constraint_OverlappingPackage\\
 CREATE TRIGGER constraint_OverlappingPackage
 BEFORE INSERT ON HOADONGOIDICHVU FOR EACH ROW
