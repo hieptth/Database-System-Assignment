@@ -250,6 +250,7 @@ VALUES ('NCC0001', 'VT0001', 'CN1'),
 CREATE TABLE IF NOT EXISTS KHACHHANG (
     MaKhachHang VARCHAR(8) NOT NULL,
     CCCD VARCHAR(12) NOT NULL UNIQUE,
+    HoTen VARCHAR(50) NOT NULL,
     Email VARCHAR(50) NOT NULL UNIQUE,
     Username VARCHAR(50) NOT NULL UNIQUE,
     Password VARCHAR(255) NOT NULL,
@@ -258,11 +259,11 @@ CREATE TABLE IF NOT EXISTS KHACHHANG (
     CONSTRAINT PK_KHACHHANG PRIMARY KEY (MaKhachHang)
 );
 -- @block 13 KHACHHANG --
-INSERT INTO KHACHHANG (MaKhachHang, CCCD, Email, Username, Password, Diem, Loai)
-VALUES ('KH000001', '000000', 'a@gmail.com', 'Phuc', 'ChienHugo11', 0, 1),
-    ('KH000002', '111111', 'b@gmail.com', 'NK', 'VikKhoTau.hehehe',60, 2),
-    ('KH000003', '222222', 'c@gmail.com', 'HH', 'DragonFat@332',520, 3),
-    ('KH000004', '333333', 'd@gmail.com', 'TV', 'LokLokLok25532',1006, 4);
+INSERT INTO KHACHHANG (MaKhachHang, CCCD, HoTen, Email, Username, Password, Diem, Loai)
+VALUES ('KH000001', '000000', 'Chien Hugo', 'a@gmail.com', 'Phuc', 0, 1),
+    ('KH000002', '111111', 'Lok Vikkho', 'b@gmail.com', 'NK', 60, 2),
+    ('KH000003', '222222', 'Duy Wjbu', 'c@gmail.com', 'HH', 520, 3),
+    ('KH000004', '333333', 'Chien Higu', 'd@gmail.com', 'TV', 1006, 4);
 -- @block TRIGGER 1d --
 DELIMITER \\
 DROP TRIGGER IF EXISTS update_LoaiKhachHang\\
