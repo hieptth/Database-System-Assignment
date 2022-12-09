@@ -1,0 +1,7 @@
+TYPE=TRIGGERS
+triggers='CREATE DEFINER=`sManager`@`localhost` TRIGGER update_TongTienGoiDichVu\nBEFORE INSERT ON HOADONGOIDICHVU FOR EACH ROW\nBEGIN\n    DECLARE LoaiKH INT;\n    DECLARE SoNgayConLai INT;\n    DECLARE SoTien INT;\n    SET LoaiKH = (SELECT Loai FROM KHACHHANG WHERE KHACHHANG.MaKhachHang = NEW.HDGDV_MKH);\n    SET SoNgayConLai = (SELECT SoNgay FROM GOIDICHVU WHERE GOIDICHVU.TenGoi = NEW.HDGDV_TG);\n    IF LoaiKH = 2 THEN SET SoTien = ((SELECT Gia FROM GOIDICHVU WHERE GOIDICHVU.TenGoi = NEW.HDGDV_TG) * 9 / 10);\n    ELSEIF LoaiKH = 3 THEN SET SoTien = ((SELECT Gia FROM GOIDICHVU WHERE GOIDICHVU.TenGoi = NEW.HDGDV_TG) * 17 / 20),\n							SoNgayConLai = SoNgayConLai + 1;\n    ELSEIF LoaiKH = 4 THEN SET SoTien = ((SELECT Gia FROM GOIDICHVU WHERE GOIDICHVU.TenGoi = NEW.HDGDV_TG) * 4 / 5),\n							SoNgayConLai = SoNgayConLai + 2;\n	ELSE SET SoTien = NEW.TongTien;\n    END IF;\n    SET NEW.TongTien = SoTien;\n    SET NEW.SoNgaySuDungConLai = SoNgayConLai;\nEND' 'CREATE DEFINER=`sManager`@`localhost` TRIGGER update_Diem_GDV\nAFTER INSERT ON HOADONGOIDICHVU FOR EACH ROW\nBEGIN\n    DECLARE DiemThem INT;\n	SET DiemThem = floor(NEW.TongTien/1000);\n	UPDATE KHACHHANG\n	SET Diem = Diem + DiemThem\n	WHERE MaKhachHang = NEW.HDGDV_MKH;\nEND'
+sql_modes=1073741824 1073741824
+definers='sManager@localhost' 'sManager@localhost'
+client_cs_names='utf8' 'utf8'
+connection_cl_names='utf8_general_ci' 'utf8_general_ci'
+db_cl_names='latin1_swedish_ci' 'latin1_swedish_ci'

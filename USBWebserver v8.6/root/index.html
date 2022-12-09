@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Page Title</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <link rel='stylesheet' type='text/css' media='screen' href='home.css'>
+        <script src='main.js'></script>
+        <style>
+            #footer {
+                position: fixed;
+                padding: 10px 10px 0px 10px;
+                bottom: 0;
+                width: 100%;
+                /* Height of the footer*/
+                height: 60px;
+                background: white;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>HOTEL MANAGEMENT WEBSITE</h1>
+        <div id="frm">
+            <form action="home.php" method="POST">
+                <p>
+                    <label>Username:</label>
+                    <input type="text" id="user" name="user" />
+                </p>
+                <p>
+                    <label>Password:</label>
+                    <input type="password" id="pass" name="pass" />
+                </p>
+                <p>
+                    <input type="submit" id="btn" value="Login" />
+                </p>
+            </form>
+        </div>
+    </body>
+</html>
