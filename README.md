@@ -1,8 +1,9 @@
 # Database-System-Assignment
 
-Application link:
+## How to run
+1. Download the zip file.
+2. Go into `USBWebserver v8.6` folder and run `usbwebserver.exe`.
+3. Enable firewall access if necessary.
+4. Click on `localhost` to start the web page or `PHP MyAdmin` to access the database.
 
-Contact me: hiep.truongtanhao@hcmut.edu.vn
-
-
-đổi tổng tiền thành decimal để lấy số thập phân
+### Contact me: hiep.truongtanhao@hcmut.edu.vn
