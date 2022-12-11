@@ -1,7 +1,7 @@
 USE MYHOTEL;
 
-DELIMITER \\
 -- @block STORED PROCEDURE 1 --
+DELIMITER \\
 DROP PROCEDURE IF EXISTS GoiDichVu\\
 CREATE PROCEDURE GoiDichVu (IN MaKhachHang VARCHAR(8))
 BEGIN
@@ -136,7 +136,6 @@ BEGIN
 END\\
 DELIMITER ;
 
-/*
 -- @block TRIGGER 2 --
 DELIMITER \\
 DROP TRIGGER IF EXISTS constraint_OverlappingPackage\\
@@ -153,4 +152,3 @@ BEGIN
     END IF;
 END\\
 DELIMITER ;
-*/
