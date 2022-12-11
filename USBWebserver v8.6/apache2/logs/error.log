@@ -1,5 +1,5 @@
-[Sun Dec 11 17:02:44.128161 2022] [mpm_winnt:notice] [pid 22412:tid 644] AH00455: Apache/2.4.6 (Win32) PHP/5.4.17 configured -- resuming normal operations
-[Sun Dec 11 17:02:44.128161 2022] [mpm_winnt:notice] [pid 22412:tid 644] AH00456: Apache Lounge VC10 Server built: Jul 16 2013 11:15:41
-[Sun Dec 11 17:02:44.128161 2022] [core:notice] [pid 22412:tid 644] AH00094: Command line: 'D:\\My Document\\Third year\\Database Systems\\Database-System-Assignment\\USBWebserver v8.6/apache2/bin/httpd_usbwv8.exe -d D:/My Document/Third year/Database Systems/Database-System-Assignment/USBWebserver v8.6/apache2'
-[Sun Dec 11 17:02:44.143800 2022] [mpm_winnt:notice] [pid 22412:tid 644] AH00418: Parent: Created child process 21964
-[Sun Dec 11 17:02:44.654081 2022] [mpm_winnt:notice] [pid 21964:tid 848] AH00354: Child: Starting 64 worker threads.
+[Sun Dec 11 20:35:02.134309 2022] [mpm_winnt:notice] [pid 10288:tid 624] AH00455: Apache/2.4.6 (Win32) PHP/5.4.17 configured -- resuming normal operations
+[Sun Dec 11 20:35:02.134309 2022] [mpm_winnt:notice] [pid 10288:tid 624] AH00456: Apache Lounge VC10 Server built: Jul 16 2013 11:15:41
+[Sun Dec 11 20:35:02.134309 2022] [core:notice] [pid 10288:tid 624] AH00094: Command line: 'D:\\My Document\\Third year\\Database Systems\\Database-System-Assignment\\USBWebserver v8.6/apache2/bin/httpd_usbwv8.exe -d D:/My Document/Third year/Database Systems/Database-System-Assignment/USBWebserver v8.6/apache2'
+[Sun Dec 11 20:35:02.364297 2022] [mpm_winnt:notice] [pid 10288:tid 624] AH00418: Parent: Created child process 10916
+[Sun Dec 11 20:35:02.812910 2022] [mpm_winnt:notice] [pid 10916:tid 792] AH00354: Child: Starting 64 worker threads.
