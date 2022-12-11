@@ -260,10 +260,10 @@ CREATE TABLE IF NOT EXISTS KHACHHANG (
 );
 -- @block 13 KHACHHANG --
 INSERT INTO KHACHHANG (MaKhachHang, CCCD, HoTen, Email, Username, Password, Diem, Loai)
-VALUES ('KH000001', '000000', 'Chien Hugo', 'a@gmail.com', 'Phuc', 0, 1),
-    ('KH000002', '111111', 'Lok Vikkho', 'b@gmail.com', 'NK', 60, 2),
-    ('KH000003', '222222', 'Duy Wjbu', 'c@gmail.com', 'HH', 520, 3),
-    ('KH000004', '333333', 'Chien Higu', 'd@gmail.com', 'TV', 1006, 4);
+VALUES ('KH000001', '000000', 'Chien Hugo', 'a@gmail.com', 'Phuc', 'hihihi', 0, 1),
+    ('KH000002', '111111', 'Lok Vikkho', 'b@gmail.com', 'NK', 'hahahaha', 60, 2),
+    ('KH000003', '222222', 'Duy Wjbu', 'c@gmail.com', 'HH', 'blalbalba', 520, 3),
+    ('KH000004', '333333', 'Chien Higu', 'd@gmail.com', 'TV', 'brubrubru', 1006, 4);
 -- @block 14 --
 CREATE TABLE IF NOT EXISTS GOIDICHVU (
     TenGoi VARCHAR(50),
@@ -521,30 +521,3 @@ VALUES ('CN1', 1, '7:00:00', '17:00:00'),
     ('CN2', 2, '7:15:00', '17:00:00'),
     ('CN3', 3, '7:30:00', '17:00:00'),
     ('CN4', 4, '7:45:00', '17:00:00');
-USE MYHOTEL;
-DELIMITER \\
--- @block STORED PROCEDURE 1 --
-DROP PROCEDURE IF EXISTS GoiDichVu\\
-CREATE PROCEDURE GoiDichVu (IN MaKhachHang VARCHAR(8))
-BEGIN
-    DECLARE count int DEFAULT 0;
-    SET count = (SELECT COUNT(HDGDV_MKH) FROM HOADONGOIDICHVU WHERE HDGDV_MKH = MaKhachHang);
-    IF count > 0 THEN
-    SELECT HOADONGOIDICHVU.HDGDV_TG AS 'Tên Gói', GOIDICHVU.SoKhach AS 'Số Khách', HOADONGOIDICHVU.NgayBatDau AS 'Ngày Bắt đầu', 
-            ADDDATE(HOADONGOIDICHVU.NgayBatDau, INTERVAL GOIDICHVU.SoNgay DAY) AS 'Ngày kết thúc', HOADONGOIDICHVU.SoNgaySuDungConLai AS 'Số ngày sử dụng còn lại'
-    FROM (HOADONGOIDICHVU INNER JOIN GOIDICHVU ON HOADONGOIDICHVU.HDGDV_TG = GOIDICHVU.TenGoi)
-    WHERE HOADONGOIDICHVU.HDGDV_MKH = MaKhachHang;
-    ELSE SELECT CONCAT('YOUR PARAMETER ',MaKhachHang,' DOES NOT EXIST!') AS 'ERROR';
-    END IF;
-END\\
--- @block STORED PROCEDURE 2 --
-DROP PROCEDURE IF EXISTS ThongKeLuotKhach\\
-CREATE PROCEDURE ThongKeLuotKhach (IN MCN VARCHAR(50), IN NamThongKe INT(5))
-BEGIN
-    SELECT MONTH(NgayNhanPhong) AS 'Tháng', SUM(SoKhach) AS 'Tổng số lượt khách'
-    FROM (SELECT TinhTrang, SoKhach, PT_MCN, NgayNhanPhong FROM DONDATPHONG INNER JOIN PHONGTHUE ON MaDatPhong = PT_MDP) AS T
-    WHERE PT_MCN = MCN AND TinhTrang = 1 AND YEAR(NgayNhanPhong) = NamThongKe
-    GROUP BY MONTH(NgayNhanPhong)
-    ORDER BY MONTH(NgayNhanPhong);
-END\\
-DELIMITER ;

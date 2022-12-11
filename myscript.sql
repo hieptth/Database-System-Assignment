@@ -260,10 +260,10 @@ CREATE TABLE IF NOT EXISTS KHACHHANG (
 );
 -- @block 13 KHACHHANG --
 INSERT INTO KHACHHANG (MaKhachHang, CCCD, HoTen, Email, Username, Password, Diem, Loai)
-VALUES ('KH000001', '000000', 'Chien Hugo', 'a@gmail.com', 'Phuc', 0, 1),
-    ('KH000002', '111111', 'Lok Vikkho', 'b@gmail.com', 'NK', 60, 2),
-    ('KH000003', '222222', 'Duy Wjbu', 'c@gmail.com', 'HH', 520, 3),
-    ('KH000004', '333333', 'Chien Higu', 'd@gmail.com', 'TV', 1006, 4);
+VALUES ('KH000001', '000000', 'Chien Hugo', 'a@gmail.com', 'Phuc', 'hihihi', 0, 1),
+    ('KH000002', '111111', 'Lok Vikkho', 'b@gmail.com', 'NK', 'hahahaha', 60, 2),
+    ('KH000003', '222222', 'Duy Wjbu', 'c@gmail.com', 'HH', 'blalbalba', 520, 3),
+    ('KH000004', '333333', 'Chien Higu', 'd@gmail.com', 'TV', 'brubrubru', 1006, 4);
 -- @block TRIGGER 1d --
 DELIMITER \\
 DROP TRIGGER IF EXISTS update_LoaiKhachHang\\
@@ -660,7 +660,7 @@ END\\
 DROP PROCEDURE IF EXISTS ThongKeLuotKhach\\
 CREATE PROCEDURE ThongKeLuotKhach (IN MCN VARCHAR(50), IN NamThongKe INT(5))
 BEGIN
-    SELECT MONTH(NgayNhanPhong) AS 'Tháng', SUM(SoKhach) AS 'Tổng số lượt khách'
+    SELECT MONTH(NgayNhanPhong) AS 'Thang', SUM(SoKhach) AS 'Tong so luot khach'
     FROM (SELECT TinhTrang, SoKhach, PT_MCN, NgayNhanPhong FROM DONDATPHONG INNER JOIN PHONGTHUE ON MaDatPhong = PT_MDP) AS T
     WHERE PT_MCN = MCN AND TinhTrang = 1 AND YEAR(NgayNhanPhong) = NamThongKe
     GROUP BY MONTH(NgayNhanPhong)

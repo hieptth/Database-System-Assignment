@@ -1,6 +1,5 @@
-[Fri Dec 09 20:15:46.604774 2022] [mpm_winnt:notice] [pid 11596:tid 756] AH00455: Apache/2.4.6 (Win32) PHP/5.4.17 configured -- resuming normal operations
-[Fri Dec 09 20:15:46.604774 2022] [mpm_winnt:notice] [pid 11596:tid 756] AH00456: Apache Lounge VC10 Server built: Jul 16 2013 11:15:41
-[Fri Dec 09 20:15:46.604774 2022] [core:notice] [pid 11596:tid 756] AH00094: Command line: 'C:\\Users\\hiept\\OneDrive\\Desktop\\USBWebserver v8.6/apache2/bin/httpd_usbwv8.exe -d C:/Users/hiept/OneDrive/Desktop/USBWebserver v8.6/apache2'
-[Fri Dec 09 20:15:46.608773 2022] [mpm_winnt:notice] [pid 11596:tid 756] AH00418: Parent: Created child process 12204
-[Fri Dec 09 20:15:47.258074 2022] [mpm_winnt:notice] [pid 12204:tid 772] AH00354: Child: Starting 64 worker threads.
-[Fri Dec 09 20:20:05.839906 2022] [:error] [pid 12204:tid 1288] [client ::1:64285] PHP Fatal error:  Call to a member function prepare() on a non-object in C:\\Users\\hiept\\OneDrive\\Desktop\\USBWebserver v8.6\\root\\home.php on line 138, referer: http://localhost:8080/home.php
+[Sun Dec 11 17:02:44.128161 2022] [mpm_winnt:notice] [pid 22412:tid 644] AH00455: Apache/2.4.6 (Win32) PHP/5.4.17 configured -- resuming normal operations
+[Sun Dec 11 17:02:44.128161 2022] [mpm_winnt:notice] [pid 22412:tid 644] AH00456: Apache Lounge VC10 Server built: Jul 16 2013 11:15:41
+[Sun Dec 11 17:02:44.128161 2022] [core:notice] [pid 22412:tid 644] AH00094: Command line: 'D:\\My Document\\Third year\\Database Systems\\Database-System-Assignment\\USBWebserver v8.6/apache2/bin/httpd_usbwv8.exe -d D:/My Document/Third year/Database Systems/Database-System-Assignment/USBWebserver v8.6/apache2'
+[Sun Dec 11 17:02:44.143800 2022] [mpm_winnt:notice] [pid 22412:tid 644] AH00418: Parent: Created child process 21964
+[Sun Dec 11 17:02:44.654081 2022] [mpm_winnt:notice] [pid 21964:tid 848] AH00354: Child: Starting 64 worker threads.
